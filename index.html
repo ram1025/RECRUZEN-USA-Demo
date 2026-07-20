@@ -59,8 +59,8 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
   </div>
 
   <div class="search-bar">
-    <input type="text" id="jobTitle" placeholder="Job Title: Java Developer">
-    <input type="text" id="skills" placeholder="Skills: Spring, AWS">
+    <input type="text" id="jobTitle" placeholder="Job Title: IT Support Specialist">
+    <input type="text" id="skills" placeholder="Skills: Java, ATS">
     <select id="notice">
       <option value="">Any Notice Period</option>
       <option value="Immediate">Immediate</option>
@@ -83,15 +83,18 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
     </select>
     <button class="btn" style="width:auto;" onclick="searchCandidates()">Search Talent</button>
   </div>
-  <div id="candidateList"><p style="text-align:center; color:#64748b; padding:60px;">Enter filters and click Search to find candidates</p></div>
+  <div id="candidateList"></div>
 </div>
 
 <script>
 let credits = 50;
+
+// YOUR PROFILE DEFAULT GA + DUMMY DATA
 let candidates = [
-  {id:"ganesh001", name:"GANESH RAM MAKINA", designation:"IT Support Specialist & Senior Talent Acquisition", match:"99%", visa:"H1B", location:"Austin, TX", notice:"30 Days", skills:"Java, J2EE, Spring Boot, ATS, Recruitment", exp:9, isNew:true},
+  {id:"ganesh001", name:"GANESH RAM MAKINA", designation:"IT Support Specialist & Senior Talent Acquisition", match:"99%", visa:"H1B", location:"Austin, TX", notice:"30 Days", skills:"Java, J2EE, Spring Boot, ATS, Recruitment, Kibana, Grafana", exp:9, isNew:true},
   {id:"p1", name:"Priya Sharma", designation:"Senior Java Developer", match:"96%", visa:"H1B", location:"Remote", notice:"30 Days", skills:"Java, Spring Boot, AWS", exp:5, isNew:false},
-  {id:"p2", name:"Rahul Verma", designation:"Full Stack Engineer", match:"92%", visa:"Green Card", location:"Austin, TX", notice:"Immediate", skills:"React, Node, AWS", exp:4, isNew:false}
+  {id:"p2", name:"Rahul Verma", designation:"Full Stack Engineer", match:"92%", visa:"Green Card", location:"Austin, TX", notice:"Immediate", skills:"React, Node, AWS", exp:4, isNew:false},
+  {id:"p3", name:"Anita Patel", designation:"DevOps Engineer", match:"88%", visa:"OPT", location:"New York, NY", notice:"2 Weeks", skills:"Docker, Kubernetes, AWS, Jenkins", exp:3, isNew:false}
 ];
 
 // PASSWORD TOGGLE
@@ -100,7 +103,7 @@ function togglePassword(){
   pass.type = pass.type === 'password' ? 'text' : 'password';
 }
 
-// LOGIN WITH CHECK
+// LOGIN WITH AUTO SEARCH
 function login(){
   let email = document.getElementById('email').value;
   let pass = document.getElementById('pass').value;
@@ -108,6 +111,7 @@ function login(){
   if(email === "demo@staffing.com" && pass === "demo123"){
     document.getElementById('loginPage').style.display='none';
     document.getElementById('dashboard').style.display='block';
+    searchCandidates(); // LOGIN AYINA VENTANE DEFAULT SEARCH - NUV KANIPISTHAV
   } else {
     alert("❌ Invalid credentials\nUse Demo:\nEmail: demo@staffing.com\nPassword: demo123");
   }
@@ -115,7 +119,7 @@ function login(){
 
 function displayCandidates(list){
   let html = "";
-  if(list.length==0) html="<p style='text-align:center; padding:40px;'>No candidates found. Try different filters.</p>";
+  if(list.length==0) html="<p style='text-align:center; padding:40px; color:#64748b;'>No candidates found. Try clearing filters.</p>";
   list.forEach(c=>{
     html+=`<div class="candidate-card ${c.isNew?'new':''}">
       ${c.isNew ? '<span class="new-badge">NEW</span>' : ''}
