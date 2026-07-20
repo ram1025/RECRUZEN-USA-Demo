@@ -14,6 +14,8 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
 .eye {position:absolute; right:12px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:18px;}
 .btn {background:#2563eb; color:white; padding:14px; width:100%; border:none; border-radius:6px; font-weight:700; cursor:pointer; font-size:16px; margin-top:10px;}
 .btn:hover {background:#1d4ed8;}
+.btn.download {background:#16a34a; width:150px; padding:12px;}
+.btn.download:disabled {background:#94a3b8; cursor:not-allowed;}
 .demo-info {background:#eff6ff; border:1px solid #bfdbfe; padding:12px; border-radius:6px; margin-top:15px; font-size:13px;}
 .demo-info b {color:#1e40af;}
 .header {display:flex; justify-content:space-between; align-items:center; background:white; padding:15px 30px; border-bottom:1px solid #e2e8f0;}
@@ -25,6 +27,7 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
 .new {border-left:4px solid #16a34a;}
 .new-badge {position: absolute; top: 15px; right: 15px; background: #16a34a; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight:700;}
 #dashboard {display:none;}
+.empty-state {text-align:center; color:#64748b; padding:80px 20px;}
 </style>
 </head>
 <body>
@@ -62,39 +65,45 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
     <input type="text" id="jobTitle" placeholder="Job Title: IT Support Specialist">
     <input type="text" id="skills" placeholder="Skills: Java, ATS">
     <select id="notice">
-      <option value="">Any Notice Period</option>
+      <option value="">Select Notice Period</option>
       <option value="Immediate">Immediate</option>
       <option value="2 Weeks">2 Weeks</option>
       <option value="30 Days">30 Days</option>
       <option value="60 Days">60 Days</option>
     </select>
     <select id="location">
-      <option value="">Any Location</option>
+      <option value="">Select Location</option>
       <option value="Remote">Remote</option>
       <option value="Austin, TX">Austin, TX</option>
       <option value="New York, NY">New York, NY</option>
     </select>
     <select id="visa">
-      <option value="">Any Visa</option>
+      <option value="">Select Visa</option>
       <option value="US Citizen">US Citizen</option>
       <option value="Green Card">Green Card</option>
       <option value="H1B">H1B</option>
       <option value="OPT">OPT/CPT</option>
     </select>
-    <button class="btn" style="width:auto;" onclick="searchCandidates()">Search Talent</button>
+    <button class="btn" style="width:auto;" onclick="searchCandidates()">🔍 Search Talent</button>
   </div>
-  <div id="candidateList"></div>
+  
+  <div id="candidateList">
+    <div class="empty-state">
+      <h3>Start Your Search</h3>
+      <p>Enter filters above and click Search to find candidates</p>
+    </div>
+  </div>
 </div>
 
 <script>
 let credits = 50;
+let downloadedProfiles = []; // Download chesina profiles track cheyadaniki
 
-// YOUR PROFILE DEFAULT GA + DUMMY DATA
+// CANDIDATE DATABASE
 let candidates = [
-  {id:"ganesh001", name:"GANESH RAM MAKINA", designation:"IT Support Specialist & Senior Talent Acquisition", match:"99%", visa:"H1B", location:"Austin, TX", notice:"30 Days", skills:"Java, J2EE, Spring Boot, ATS, Recruitment, Kibana, Grafana", exp:9, isNew:true},
+  {id:"ganesh001", name:"GANESH RAM MAKINA", designation:"IT Support Specialist & Senior Talent Acquisition", match:"99%", visa:"H1B", location:"Austin, TX", notice:"30 Days", skills:"Java, J2EE, Spring Boot, WebSphere, Kibana, Grafana, Recruitment, ATS", exp:9, isNew:true},
   {id:"p1", name:"Priya Sharma", designation:"Senior Java Developer", match:"96%", visa:"H1B", location:"Remote", notice:"30 Days", skills:"Java, Spring Boot, AWS", exp:5, isNew:false},
-  {id:"p2", name:"Rahul Verma", designation:"Full Stack Engineer", match:"92%", visa:"Green Card", location:"Austin, TX", notice:"Immediate", skills:"React, Node, AWS", exp:4, isNew:false},
-  {id:"p3", name:"Anita Patel", designation:"DevOps Engineer", match:"88%", visa:"OPT", location:"New York, NY", notice:"2 Weeks", skills:"Docker, Kubernetes, AWS, Jenkins", exp:3, isNew:false}
+  {id:"p2", name:"Rahul Verma", designation:"Full Stack Engineer", match:"92%", visa:"Green Card", location:"Austin, TX", notice:"Immediate", skills:"React, Node, AWS", exp:4, isNew:false}
 ];
 
 // PASSWORD TOGGLE
@@ -103,7 +112,7 @@ function togglePassword(){
   pass.type = pass.type === 'password' ? 'text' : 'password';
 }
 
-// LOGIN WITH AUTO SEARCH
+// LOGIN
 function login(){
   let email = document.getElementById('email').value;
   let pass = document.getElementById('pass').value;
@@ -111,7 +120,7 @@ function login(){
   if(email === "demo@staffing.com" && pass === "demo123"){
     document.getElementById('loginPage').style.display='none';
     document.getElementById('dashboard').style.display='block';
-    searchCandidates(); // LOGIN AYINA VENTANE DEFAULT SEARCH - NUV KANIPISTHAV
+    // Search cheyaka mundu emi kanipinchakudadhu
   } else {
     alert("❌ Invalid credentials\nUse Demo:\nEmail: demo@staffing.com\nPassword: demo123");
   }
@@ -119,14 +128,18 @@ function login(){
 
 function displayCandidates(list){
   let html = "";
-  if(list.length==0) html="<p style='text-align:center; padding:40px; color:#64748b;'>No candidates found. Try clearing filters.</p>";
+  if(list.length==0) html="<div class='empty-state'><h3>No candidates found</h3><p>Try different filters</p></div>";
+  
   list.forEach(c=>{
+    let isDownloaded = downloadedProfiles.includes(c.id);
     html+=`<div class="candidate-card ${c.isNew?'new':''}">
       ${c.isNew ? '<span class="new-badge">NEW</span>' : ''}
       <h3>${c.name} <span class="match-score">Match: ${c.match}</span></h3>
       <p><b>${c.designation}</b> | ${c.exp} Years | ${c.location} | Visa: ${c.visa} | Notice: ${c.notice}</p>
       <p>${c.skills.split(',').map(s=>`<span class="tag">${s.trim()}</span>`).join('')}</p>
-      <button class="btn" style="width:150px;" onclick="downloadResume('${c.name}')">⬇ Download CV</button>
+      <button class="btn download" ${isDownloaded?'disabled':''} onclick="downloadResume('${c.id}', '${c.name}')">
+        ${isDownloaded ? '✓ Downloaded' : '⬇ Download CV'}
+      </button>
     </div>`;
   });
   document.getElementById('candidateList').innerHTML=html;
@@ -138,6 +151,13 @@ function searchCandidates(){
   let n=document.getElementById('notice').value;
   let l=document.getElementById('location').value;
   let v=document.getElementById('visa').value;
+  
+  // Atleast 1 filter pettali
+  if(j==="" && s==="" && n==="" && l==="" && v===""){
+    alert("⚠️ Please enter at least 1 filter to search");
+    return;
+  }
+  
   let filtered=candidates.filter(c=>
     (j===""||c.designation.toLowerCase().includes(j)) &&
     (s===""||c.skills.toLowerCase().includes(s)) &&
@@ -148,11 +168,14 @@ function searchCandidates(){
   displayCandidates(filtered);
 }
 
-function downloadResume(name){
+// PRATI SARU DOWNLOAD CHESTE CREDIT TAGUTHUNDI
+function downloadResume(id, name){
   if(credits>0){
     credits--; 
     document.getElementById('credits').innerText=credits; 
+    downloadedProfiles.push(id); // Button disable cheyadaniki
     alert(`✅ 1 Credit Deducted!\nDownloading ${name}'s Resume`);
+    searchCandidates(); // Button state update cheyadaniki refresh
   }
   else alert("❌ No credits left. Please buy credits");
 }
