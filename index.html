@@ -16,6 +16,7 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
 .btn:hover {background:#1d4ed8;}
 .btn.download {background:#16a34a; width:150px; padding:12px;}
 .btn.download:disabled {background:#94a3b8; cursor:not-allowed;}
+.btn.logout {background:#ef4444; width:auto; padding:10px 20px; font-size:14px;}
 .demo-info {background:#eff6ff; border:1px solid #bfdbfe; padding:12px; border-radius:6px; margin-top:15px; font-size:13px;}
 .demo-info b {color:#1e40af;}
 .header {display:flex; justify-content:space-between; align-items:center; background:white; padding:15px 30px; border-bottom:1px solid #e2e8f0;}
@@ -58,11 +59,14 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
 <div id="dashboard">
   <div class="header">
     <h2>RECRUZEN-USA <span style="font-size:14px; color:#64748b;">Dashboard</span></h2>
-    <div>Credits: <b id="credits">50</b></div>
+    <div>
+      Credits: <b id="credits">50</b> 
+      <button class="btn logout" onclick="logout()">Logout</button>
+    </div>
   </div>
 
   <div class="search-bar">
-    <input type="text" id="jobTitle" placeholder="Job Title: IT Support Specialist">
+    <input type="text" id="jobTitle" placeholder="Job Title: IT Support">
     <input type="text" id="skills" placeholder="Skills: Java, ATS">
     <select id="notice">
       <option value="">Select Notice Period</option>
@@ -97,7 +101,7 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
 
 <script>
 let credits = 50;
-let downloadedProfiles = []; // Download chesina profiles track cheyadaniki
+let downloadedProfiles = JSON.parse(localStorage.getItem('downloadedProfiles')) || [];
 
 // CANDIDATE DATABASE
 let candidates = [
@@ -105,6 +109,16 @@ let candidates = [
   {id:"p1", name:"Priya Sharma", designation:"Senior Java Developer", match:"96%", visa:"H1B", location:"Remote", notice:"30 Days", skills:"Java, Spring Boot, AWS", exp:5, isNew:false},
   {id:"p2", name:"Rahul Verma", designation:"Full Stack Engineer", match:"92%", visa:"Green Card", location:"Austin, TX", notice:"Immediate", skills:"React, Node, AWS", exp:4, isNew:false}
 ];
+
+// PAGE LOAD AYINA APPUDU SESSION CHECK
+window.onload = function(){
+  let session = localStorage.getItem('recruzenSession');
+  if(session === 'loggedIn'){
+    document.getElementById('loginPage').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    document.getElementById('credits').innerText = localStorage.getItem('credits') || 50;
+  }
+}
 
 // PASSWORD TOGGLE
 function togglePassword(){
@@ -118,17 +132,26 @@ function login(){
   let pass = document.getElementById('pass').value;
   
   if(email === "demo@staffing.com" && pass === "demo123"){
+    localStorage.setItem('recruzenSession', 'loggedIn');
+    localStorage.setItem('credits', credits);
     document.getElementById('loginPage').style.display='none';
     document.getElementById('dashboard').style.display='block';
-    // Search cheyaka mundu emi kanipinchakudadhu
   } else {
     alert("❌ Invalid credentials\nUse Demo:\nEmail: demo@staffing.com\nPassword: demo123");
   }
 }
 
+// LOGOUT
+function logout(){
+  localStorage.removeItem('recruzenSession');
+  localStorage.removeItem('credits');
+  localStorage.removeItem('downloadedProfiles');
+  location.reload(); // Login page ki vellipothundi
+}
+
 function displayCandidates(list){
   let html = "";
-  if(list.length==0) html="<div class='empty-state'><h3>No candidates found</h3><p>Try different filters</p></div>";
+  if(list.length==0) html="<div class='empty-state'><h3>No candidates found</h3><p>Try different filters. Ex: IT Support, Java, Austin</p></div>";
   
   list.forEach(c=>{
     let isDownloaded = downloadedProfiles.includes(c.id);
@@ -145,6 +168,7 @@ function displayCandidates(list){
   document.getElementById('candidateList').innerHTML=html;
 }
 
+// SEARCH FIX: PARTIAL MATCH CHESTHUNDI
 function searchCandidates(){
   let j=document.getElementById('jobTitle').value.toLowerCase();
   let s=document.getElementById('skills').value.toLowerCase();
@@ -152,14 +176,13 @@ function searchCandidates(){
   let l=document.getElementById('location').value;
   let v=document.getElementById('visa').value;
   
-  // Atleast 1 filter pettali
   if(j==="" && s==="" && n==="" && l==="" && v===""){
     alert("⚠️ Please enter at least 1 filter to search");
     return;
   }
   
   let filtered=candidates.filter(c=>
-    (j===""||c.designation.toLowerCase().includes(j)) &&
+    (j===""||c.designation.toLowerCase().includes(j) || c.designation.toLowerCase().split(' ').some(word=>j.includes(word))) &&
     (s===""||c.skills.toLowerCase().includes(s)) &&
     (n===""||c.notice===n) &&
     (l===""||c.location===l) &&
@@ -173,9 +196,11 @@ function downloadResume(id, name){
   if(credits>0){
     credits--; 
     document.getElementById('credits').innerText=credits; 
-    downloadedProfiles.push(id); // Button disable cheyadaniki
+    downloadedProfiles.push(id);
+    localStorage.setItem('downloadedProfiles', JSON.stringify(downloadedProfiles));
+    localStorage.setItem('credits', credits);
     alert(`✅ 1 Credit Deducted!\nDownloading ${name}'s Resume`);
-    searchCandidates(); // Button state update cheyadaniki refresh
+    searchCandidates(); 
   }
   else alert("❌ No credits left. Please buy credits");
 }
