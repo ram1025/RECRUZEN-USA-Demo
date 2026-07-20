@@ -27,26 +27,22 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
 .tag {background:#eff6ff; color:#1e40af; padding:4px 8px; border-radius:4px; font-size:12px; margin-right:5px; border:1px solid #bfdbfe; display:inline-block; margin-top:5px;}
 .new {border-left:4px solid #16a34a;}
 .new-badge {position: absolute; top: 15px; right: 15px; background: #16a34a; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight:700;}
-#dashboard {display:none;}
+.hidden {display:none !important;}
 .empty-state {text-align:center; color:#64748b; padding:80px 20px;}
 </style>
 </head>
 <body>
 
-<!-- LOGIN PAGE -->
-<div id="loginPage">
+<div id="loginPage" class="hidden">
   <div class="login-box">
     <h2>RECRUZEN-USA</h2>
     <p class="subtitle">AI Sourcing Platform for US IT Staffing Companies</p>
-    
     <input type="email" id="email" placeholder="Work Email">
     <div class="password-wrapper">
       <input type="password" id="pass" placeholder="Password">
       <span class="eye" onclick="togglePassword()">👁️</span>
     </div>
-    
     <button class="btn" onclick="login()">Login</button>
-    
     <div class="demo-info">
       <b>Demo Credentials:</b><br>
       Email: demo@staffing.com<br>
@@ -55,8 +51,7 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
   </div>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard">
+<div id="dashboard" class="hidden">
   <div class="header">
     <h2>RECRUZEN-USA <span style="font-size:14px; color:#64748b;">Dashboard</span></h2>
     <div>
@@ -100,59 +95,51 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
 </div>
 
 <script>
-let credits = 50;
+let credits = parseInt(localStorage.getItem('credits')) || 50;
 let downloadedProfiles = JSON.parse(localStorage.getItem('downloadedProfiles')) || [];
 
-// CANDIDATE DATABASE
 let candidates = [
   {id:"ganesh001", name:"GANESH RAM MAKINA", designation:"IT Support Specialist & Senior Talent Acquisition", match:"99%", visa:"H1B", location:"Austin, TX", notice:"30 Days", skills:"Java, J2EE, Spring Boot, WebSphere, Kibana, Grafana, Recruitment, ATS", exp:9, isNew:true},
   {id:"p1", name:"Priya Sharma", designation:"Senior Java Developer", match:"96%", visa:"H1B", location:"Remote", notice:"30 Days", skills:"Java, Spring Boot, AWS", exp:5, isNew:false},
   {id:"p2", name:"Rahul Verma", designation:"Full Stack Engineer", match:"92%", visa:"Green Card", location:"Austin, TX", notice:"Immediate", skills:"React, Node, AWS", exp:4, isNew:false}
 ];
 
-// PAGE LOAD AYINA APPUDU SESSION CHECK
-window.onload = function(){
+(function init(){
   let session = localStorage.getItem('recruzenSession');
   if(session === 'loggedIn'){
-    document.getElementById('loginPage').style.display='none';
-    document.getElementById('dashboard').style.display='block';
-    document.getElementById('credits').innerText = localStorage.getItem('credits') || 50;
+    document.getElementById('dashboard').classList.remove('hidden');
+    document.getElementById('credits').innerText = credits;
+  } else {
+    document.getElementById('loginPage').classList.remove('hidden');
   }
-}
+})();
 
-// PASSWORD TOGGLE
 function togglePassword(){
   let pass = document.getElementById('pass');
   pass.type = pass.type === 'password' ? 'text' : 'password';
 }
 
-// LOGIN
 function login(){
   let email = document.getElementById('email').value;
   let pass = document.getElementById('pass').value;
-  
   if(email === "demo@staffing.com" && pass === "demo123"){
     localStorage.setItem('recruzenSession', 'loggedIn');
     localStorage.setItem('credits', credits);
-    document.getElementById('loginPage').style.display='none';
-    document.getElementById('dashboard').style.display='block';
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
   } else {
     alert("❌ Invalid credentials\nUse Demo:\nEmail: demo@staffing.com\nPassword: demo123");
   }
 }
 
-// LOGOUT
 function logout(){
-  localStorage.removeItem('recruzenSession');
-  localStorage.removeItem('credits');
-  localStorage.removeItem('downloadedProfiles');
-  location.reload(); // Login page ki vellipothundi
+  localStorage.clear();
+  location.reload();
 }
 
 function displayCandidates(list){
   let html = "";
-  if(list.length==0) html="<div class='empty-state'><h3>No candidates found</h3><p>Try different filters. Ex: IT Support, Java, Austin</p></div>";
-  
+  if(list.length==0) html="<div class='empty-state'><h3>No candidates found</h3><p>Try: IT Support, Java, Austin, H1B</p></div>";
   list.forEach(c=>{
     let isDownloaded = downloadedProfiles.includes(c.id);
     html+=`<div class="candidate-card ${c.isNew?'new':''}">
@@ -168,10 +155,10 @@ function displayCandidates(list){
   document.getElementById('candidateList').innerHTML=html;
 }
 
-// SEARCH FIX: PARTIAL MATCH CHESTHUNDI
+// SEARCH LOGIC FIX: KEYWORD BASED OR MATCH
 function searchCandidates(){
-  let j=document.getElementById('jobTitle').value.toLowerCase();
-  let s=document.getElementById('skills').value.toLowerCase();
+  let j=document.getElementById('jobTitle').value.toLowerCase().trim();
+  let s=document.getElementById('skills').value.toLowerCase().trim();
   let n=document.getElementById('notice').value;
   let l=document.getElementById('location').value;
   let v=document.getElementById('visa').value;
@@ -181,17 +168,23 @@ function searchCandidates(){
     return;
   }
   
-  let filtered=candidates.filter(c=>
-    (j===""||c.designation.toLowerCase().includes(j) || c.designation.toLowerCase().split(' ').some(word=>j.includes(word))) &&
-    (s===""||c.skills.toLowerCase().includes(s)) &&
-    (n===""||c.notice===n) &&
-    (l===""||c.location===l) &&
-    (v===""||c.visa===v)
-  );
+  let jKeywords = j.split(' ').filter(w=>w.length>2); // 2 chars kanna peddavi
+  let sKeywords = s.split(',').map(x=>x.trim()).filter(x=>x.length>0);
+  
+  let filtered=candidates.filter(c=>{
+    let jobMatch = jKeywords.length === 0 ? true : jKeywords.some(keyword => c.designation.toLowerCase().includes(keyword));
+    let skillMatch = sKeywords.length === 0 ? true : sKeywords.some(keyword => c.skills.toLowerCase().includes(keyword));
+    let noticeMatch = n === "" || c.notice === n;
+    let locationMatch = l === "" || c.location === l;
+    let visaMatch = v === "" || c.visa === v;
+    
+    return jobMatch && skillMatch && noticeMatch && locationMatch && visaMatch;
+  });
+  
+  console.log("Filtered:", filtered); // Debug kosam
   displayCandidates(filtered);
 }
 
-// PRATI SARU DOWNLOAD CHESTE CREDIT TAGUTHUNDI
 function downloadResume(id, name){
   if(credits>0){
     credits--; 
