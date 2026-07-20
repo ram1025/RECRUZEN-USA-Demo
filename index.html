@@ -6,12 +6,16 @@
 <title>RECRUZEN-USA - AI Sourcing for US IT</title>
 <style>
 body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
-.login-box {max-width:400px; margin:100px auto; background:white; padding:40px; border-radius:12px; border:1px solid #e2e8f0; box-shadow:0 4px 10px rgba(0,0,0,0.05);}
-.login-box h2 {color:#0f172a;}
-.login-box input {width:100%; padding:12px; margin:10px 0; border:1px solid #cbd5e1; border-radius:6px;}
-.btn {background:#2563eb; color:white; padding:12px; width:100%; border:none; border-radius:6px; font-weight:600; cursor:pointer;}
+.login-box {max-width:420px; margin:100px auto; background:white; padding:40px; border-radius:12px; border:1px solid #e2e8f0; box-shadow:0 4px 20px rgba(0,0,0,0.08);}
+.login-box h2 {color:#0f172a; margin-bottom:5px;}
+.subtitle {color:#64748b; margin-bottom:25px; font-size:14px;}
+.login-box input {width:100%; padding:12px; margin:10px 0; border:1px solid #cbd5e1; border-radius:6px; font-size:14px;}
+.password-wrapper {position:relative;}
+.eye {position:absolute; right:12px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:18px;}
+.btn {background:#2563eb; color:white; padding:14px; width:100%; border:none; border-radius:6px; font-weight:700; cursor:pointer; font-size:16px; margin-top:10px;}
 .btn:hover {background:#1d4ed8;}
-.btn.download {background:#16a34a; width:140px;}
+.demo-info {background:#eff6ff; border:1px solid #bfdbfe; padding:12px; border-radius:6px; margin-top:15px; font-size:13px;}
+.demo-info b {color:#1e40af;}
 .header {display:flex; justify-content:space-between; align-items:center; background:white; padding:15px 30px; border-bottom:1px solid #e2e8f0;}
 .search-bar {background:white; padding:20px; margin:20px; border-radius:8px; border:1px solid #e2e8f0; display:flex; gap:10px; flex-wrap:wrap;}
 .search-bar input,.search-bar select {padding:10px; border:1px solid #cbd5e1; border-radius:6px; flex:1; min-width:150px;}
@@ -21,22 +25,33 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
 .new {border-left:4px solid #16a34a;}
 .new-badge {position: absolute; top: 15px; right: 15px; background: #16a34a; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight:700;}
 #dashboard {display:none;}
-.demo-note {font-size:12px; color:#64748b; text-align:center; margin-top:10px;}
 </style>
 </head>
 <body>
 
+<!-- LOGIN PAGE -->
 <div id="loginPage">
   <div class="login-box">
     <h2>RECRUZEN-USA</h2>
-    <p style="color:#64748b;">AI Sourcing for US IT Recruiters</p>
-    <input type="email" id="email" placeholder="Work Email" value="demo@staffing.com">
-    <input type="password" id="pass" placeholder="Password" value="demo123">
+    <p class="subtitle">AI Sourcing Platform for US IT Staffing Companies</p>
+    
+    <input type="email" id="email" placeholder="Work Email">
+    <div class="password-wrapper">
+      <input type="password" id="pass" placeholder="Password">
+      <span class="eye" onclick="togglePassword()">👁️</span>
+    </div>
+    
     <button class="btn" onclick="login()">Login</button>
-    <p class="demo-note">Demo: demo@staffing.com / demo123</p>
+    
+    <div class="demo-info">
+      <b>Demo Credentials:</b><br>
+      Email: demo@staffing.com<br>
+      Password: demo123
+    </div>
   </div>
 </div>
 
+<!-- DASHBOARD -->
 <div id="dashboard">
   <div class="header">
     <h2>RECRUZEN-USA <span style="font-size:14px; color:#64748b;">Dashboard</span></h2>
@@ -51,6 +66,7 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
       <option value="Immediate">Immediate</option>
       <option value="2 Weeks">2 Weeks</option>
       <option value="30 Days">30 Days</option>
+      <option value="60 Days">60 Days</option>
     </select>
     <select id="location">
       <option value="">Any Location</option>
@@ -67,7 +83,7 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
     </select>
     <button class="btn" style="width:auto;" onclick="searchCandidates()">Search Talent</button>
   </div>
-  <div id="candidateList"><p style="text-align:center; color:#64748b; padding:60px;">Enter filters and click Search</p></div>
+  <div id="candidateList"><p style="text-align:center; color:#64748b; padding:60px;">Enter filters and click Search to find candidates</p></div>
 </div>
 
 <script>
@@ -78,25 +94,35 @@ let candidates = [
   {id:"p2", name:"Rahul Verma", designation:"Full Stack Engineer", match:"92%", visa:"Green Card", location:"Austin, TX", notice:"Immediate", skills:"React, Node, AWS", exp:4, isNew:false}
 ];
 
+// PASSWORD TOGGLE
+function togglePassword(){
+  let pass = document.getElementById('pass');
+  pass.type = pass.type === 'password' ? 'text' : 'password';
+}
+
+// LOGIN WITH CHECK
 function login(){
   let email = document.getElementById('email').value;
   let pass = document.getElementById('pass').value;
-  if(email && pass){
+  
+  if(email === "demo@staffing.com" && pass === "demo123"){
     document.getElementById('loginPage').style.display='none';
     document.getElementById('dashboard').style.display='block';
-  } else alert("Enter credentials");
+  } else {
+    alert("❌ Invalid credentials\nUse Demo:\nEmail: demo@staffing.com\nPassword: demo123");
+  }
 }
 
 function displayCandidates(list){
   let html = "";
-  if(list.length==0) html="<p style='text-align:center; padding:40px;'>No candidates found</p>";
+  if(list.length==0) html="<p style='text-align:center; padding:40px;'>No candidates found. Try different filters.</p>";
   list.forEach(c=>{
     html+=`<div class="candidate-card ${c.isNew?'new':''}">
       ${c.isNew ? '<span class="new-badge">NEW</span>' : ''}
       <h3>${c.name} <span class="match-score">Match: ${c.match}</span></h3>
       <p><b>${c.designation}</b> | ${c.exp} Years | ${c.location} | Visa: ${c.visa} | Notice: ${c.notice}</p>
       <p>${c.skills.split(',').map(s=>`<span class="tag">${s.trim()}</span>`).join('')}</p>
-      <button class="btn download" onclick="downloadResume('${c.name}')">⬇ Download CV</button>
+      <button class="btn" style="width:150px;" onclick="downloadResume('${c.name}')">⬇ Download CV</button>
     </div>`;
   });
   document.getElementById('candidateList').innerHTML=html;
@@ -119,8 +145,12 @@ function searchCandidates(){
 }
 
 function downloadResume(name){
-  if(credits>0){credits--; document.getElementById('credits').innerText=credits; alert(`1 Credit Deducted! Downloading ${name}'s Resume`);}
-  else alert("No credits left");
+  if(credits>0){
+    credits--; 
+    document.getElementById('credits').innerText=credits; 
+    alert(`✅ 1 Credit Deducted!\nDownloading ${name}'s Resume`);
+  }
+  else alert("❌ No credits left. Please buy credits");
 }
 </script>
 </body>
