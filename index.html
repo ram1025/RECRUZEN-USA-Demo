@@ -4,87 +4,102 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RECRUZEN-USA - AI Sourcing for US IT</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
-.login-box {max-width:420px; margin:100px auto; background:white; padding:40px; border-radius:12px; border:1px solid #e2e8f0; box-shadow:0 4px 20px rgba(0,0,0,0.08);}
-.login-box h2 {color:#0f172a; margin-bottom:5px;}
+* {box-sizing: border-box;}
+body {font-family: 'Inter', Arial; background: #f1f5f9; margin:0;}
+
+/* LOGIN PAGE PREMIUM */
+.login-page {min-height:100vh; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);}
+.login-box {max-width:440px; width:90%; background:white; padding:40px; border-radius:16px; box-shadow:0 20px 50px rgba(0,0,0,0.2); animation: slideUp 0.6s ease;}
+@keyframes slideUp { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+.login-logo {font-size:28px; font-weight:800; background: linear-gradient(90deg, #2563eb, #F97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+.login-box h2 {color:#0f172a; margin:5px 0 10px 0;}
 .subtitle {color:#64748b; margin-bottom:25px; font-size:14px;}
-.login-box input {width:100%; padding:12px; margin:10px 0; border:1px solid #cbd5e1; border-radius:6px; font-size:14px;}
+.login-box input {width:100%; padding:14px; margin:10px 0; border:2px solid #e2e8f0; border-radius:8px; font-size:14px; transition:0.3s;}
+.login-box input:focus {border-color:#2563eb; outline:none;}
 .password-wrapper {position:relative;}
 .eye {position:absolute; right:12px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:18px;}
-.btn {background:#2563eb; color:white; padding:14px; width:100%; border:none; border-radius:6px; font-weight:700; cursor:pointer; font-size:16px; margin-top:10px;}
-.btn:hover {background:#1d4ed8;}
-.btn.download {background:#16a34a; width:150px; padding:12px;}
-.btn.download:disabled {background:#94a3b8; cursor:not-allowed;}
-.btn.logout {background:#ef4444; width:auto; padding:10px 20px; font-size:14px;}
-.btn-banner {background:#2563eb; color:white; border:none; padding:12px 20px; border-radius:8px; font-weight:700; cursor:pointer; white-space:nowrap;}
-.btn-banner:hover {background:#1d4ed8;}
-.demo-info {background:#eff6ff; border:1px solid #bfdbfe; padding:12px; border-radius:6px; margin-top:15px; font-size:13px;}
-.demo-info b {color:#1e40af;}
-.header {display:flex; justify-content:space-between; align-items:center; background:white; padding:15px 30px; border-bottom:1px solid #e2e8f0;}
-.search-bar {background:white; padding:20px; margin:20px; border-radius:8px; border:1px solid #e2e8f0; display:flex; gap:10px; flex-wrap:wrap;}
-.search-bar input,.search-bar select {padding:10px; border:1px solid #cbd5e1; border-radius:6px; flex:1; min-width:150px;}
-.candidate-card {background:white; margin:20px; padding:20px; border-radius:8px; border:1px solid #e2e8f0; position:relative;}
-.match-score {background:#dcfce7; color:#166534; padding:4px 8px; border-radius:20px; font-size:12px; font-weight:700;}
-.tag {background:#eff6ff; color:#1e40af; padding:4px 8px; border-radius:4px; font-size:12px; margin-right:5px; border:1px solid #bfdbfe; display:inline-block; margin-top:5px;}
-.new {border-left:4px solid #16a34a;}
-.new-badge {position: absolute; top: 15px; right: 15px; background: #16a34a; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight:700;}
-.hidden {display:none !important;}
-.empty-state {text-align:center; color:#64748b; padding:80px 20px;}
+.btn {background:linear-gradient(90deg, #2563eb, #1d4ed8); color:white; padding:14px; width:100%; border:none; border-radius:8px; font-weight:700; cursor:pointer; font-size:16px; margin-top:10px; transition:0.3s;}
+.btn:hover {transform:translateY(-2px); box-shadow:0 8px 20px rgba(37,99,235,0.3);}
+.btn.download {background:linear-gradient(90deg, #16a34a, #15803d); width:160px; padding:12px;}
+.btn.download:disabled {background:#94a3b8; cursor:not-allowed; transform:none;}
+.btn.logout {background:linear-gradient(90deg, #ef4444, #dc2626); width:auto; padding:10px 20px; font-size:14px;}
+.btn-banner {background:white; color:#2563eb; border:2px solid white; padding:12px 20px; border-radius:8px; font-weight:800; cursor:pointer; white-space:nowrap;}
+.btn-banner:hover {background:rgba(255,255,255,0.2); color:white;}
+.demo-info {background:#eff6ff; border-left:4px solid #2563eb; padding:12px; border-radius:8px; margin-top:15px; font-size:13px;}
 
-/* GLASSMORPHISM BANNER CSS */
-.banner-glass {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #0f172a;
-    padding: 20px 30px;
-    border-radius: 16px;
+/* DASHBOARD HEADER */
+.header {display:flex; justify-content:space-between; align-items:center; background:white; padding:18px 30px; border-bottom:1px solid #e2e8f0; box-shadow:0 2px 10px rgba(0,0,0,0.05); position:sticky; top:0; z-index:10;}
+
+/* PREMIUM GRADIENT BANNER */
+.banner-premium {
+    background: linear-gradient(135deg, #F97316 0%, #2563eb 100%); 
+    color: white; 
+    padding: 30px; 
+    border-radius: 16px; 
     margin: 20px;
     display:flex; justify-content:space-between; align-items:center;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
     flex-wrap: wrap;
     gap: 15px;
+    animation: fadeIn 0.8s ease;
 }
-.banner-glass h1 {margin:0; font-size:20px; font-weight:800;}
-.banner-glass p {margin:5px 0 0 0; font-size:14px; color:#475569;}
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+.banner-premium h1 {margin:0; font-size:24px; font-weight:800;}
+.banner-premium p {margin:8px 0 0 0; font-size:15px; opacity:0.95;}
+
+.search-bar {background:white; padding:20px; margin:0 20px 20px 20px; border-radius:12px; border:1px solid #e2e8f0; display:flex; gap:10px; flex-wrap:wrap; box-shadow:0 4px 15px rgba(0,0,0,0.05);}
+.search-bar input,.search-bar select {padding:12px; border:2px solid #e2e8f0; border-radius:8px; flex:1; min-width:150px; font-size:14px;}
+.search-bar input:focus,.search-bar select:focus {border-color:#2563eb; outline:none;}
+
+.candidate-card {background:white; margin:20px; padding:20px; border-radius:12px; border:1px solid #e2e8f0; position:relative; box-shadow:0 4px 15px rgba(0,0,0,0.05); transition:0.3s;}
+.candidate-card:hover {transform:translateY(-3px); box-shadow:0 8px 25px rgba(0,0,0,0.1);}
+.match-score {background:#dcfce7; color:#166534; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:700;}
+.tag {background:#eff6ff; color:#1e40af; padding:5px 10px; border-radius:6px; font-size:12px; margin-right:6px; border:1px solid #bfdbfe; display:inline-block; margin-top:6px;}
+.new {border-left:4px solid #16a34a;}
+.new-badge {position: absolute; top: 15px; right: 15px; background: linear-gradient(90deg, #16a34a, #15803d); color: white; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight:800;}
+.hidden {display:none !important;}
+.empty-state {text-align:center; color:#64748b; padding:80px 20px;}
 </style>
 </head>
 <body>
 
 <div id="loginPage" class="hidden">
-  <div class="login-box">
-    <h2>RECRUZEN-USA</h2>
-    <p class="subtitle">AI Sourcing Platform for US IT Staffing Companies</p>
-    <input type="email" id="email" placeholder="Work Email">
-    <div class="password-wrapper">
-      <input type="password" id="pass" placeholder="Password">
-      <span class="eye" onclick="togglePassword()">👁️</span>
-    </div>
-    <button class="btn" onclick="login()">Login</button>
-    <div class="demo-info">
-      <b>Demo Credentials:</b><br>
-      Email: demo@staffing.com<br>
-      Password: demo123
+  <div class="login-page">
+    <div class="login-box">
+      <div class="login-logo">RECRUZEN-USA 🇺🇸</div>
+      <h2>Welcome Back</h2>
+      <p class="subtitle">AI Sourcing Platform for US IT Staffing</p>
+      <input type="email" id="email" placeholder="Work Email">
+      <div class="password-wrapper">
+        <input type="password" id="pass" placeholder="Password">
+        <span class="eye" onclick="togglePassword()">👁️</span>
+      </div>
+      <button class="btn" onclick="login()">Login</button>
+      <div class="demo-info">
+        <b>Demo Credentials:</b><br>
+        Email: demo@staffing.com<br>
+        Password: demo123
+      </div>
     </div>
   </div>
 </div>
 
 <div id="dashboard" class="hidden">
   <div class="header">
-    <h2>RECRUZEN-USA <span style="font-size:14px; color:#64748b;">Dashboard</span></h2>
+    <h2 style="margin:0;">RECRUZEN-USA <span style="font-size:14px; color:#64748b;">Dashboard</span></h2>
     <div>
-      Credits: <b id="credits">50</b> 
+      Credits: <b id="credits" style="color:#F97316;">50</b> 
       <button class="btn logout" onclick="logout()">Logout</button>
     </div>
   </div>
 
-  <!-- GLASS BANNER ADDED HERE -->
-  <div class="banner-glass">
+  <!-- PREMIUM BANNER -->
+  <div class="banner-premium">
     <div>
-      <h1>AI Talent Radar 🎯</h1>
-      <p id="bannerText">2 New Top Candidates match your search today</p>
+      <h1>🚀 AI Talent Radar</h1>
+      <p id="bannerText">Finding your next 10x hire in 30 seconds</p>
     </div>
     <button class="btn-banner" onclick="alert('Upgrade to Pro Plan for Unlimited Downloads')">Upgrade to Pro</button>
   </div>
@@ -127,7 +142,6 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
 let credits = parseInt(localStorage.getItem('credits')) || 50;
 let downloadedProfiles = JSON.parse(localStorage.getItem('downloadedProfiles')) || [];
 
-// TalentIQ.nundi data teesukovadam
 let talentProfile = localStorage.getItem("talentiqProfile");
 let candidates = [
   {id:"ganesh001", name:"GANESH RAM MAKINA", designation:"IT Support Specialist & Senior Talent Acquisition", match:"99%", visa:"H1B", location:"Austin, TX", notice:"30 Days", skills:"Java, J2EE, Spring Boot, WebSphere, Kibana, Grafana, Recruitment, ATS", exp:9, isNew:true},
@@ -138,16 +152,8 @@ let candidates = [
 if(talentProfile){
     let data = JSON.parse(talentProfile);
     let newCandidate = {
-        id:"talent_"+Date.now(), 
-        name:data.name, 
-        designation:data.designation, 
-        match:"98%", 
-        visa:"H1B", 
-        location:data.location, 
-        notice:data.jobType, 
-        skills:data.skills, 
-        exp:data.exp, 
-        isNew:true
+        id:"talent_"+Date.now(), name:data.name, designation:data.designation, match:"98%", 
+        visa:"H1B", location:data.location, notice:data.jobType, skills:data.skills, exp:data.exp, isNew:true
     };
     candidates.unshift(newCandidate);
 }
@@ -163,10 +169,7 @@ if(talentProfile){
   }
 })();
 
-function togglePassword(){
-  let pass = document.getElementById('pass');
-  pass.type = pass.type === 'password' ? 'text' : 'password';
-}
+function togglePassword(){ let pass = document.getElementById('pass'); pass.type = pass.type === 'password' ? 'text' : 'password'; }
 
 function login(){
   let email = document.getElementById('email').value;
@@ -174,18 +177,13 @@ function login(){
   if(email === "demo@staffing.com" && pass === "demo123"){
     localStorage.setItem('recruzenSession', 'loggedIn');
     localStorage.setItem('credits', credits);
-    document.getElementById('loginPage').classList.add('hidden');
-    document.getElementById('dashboard').classList.remove('hidden');
-    document.getElementById('bannerText').innerText = `${candidates.filter(c=>c.isNew).length} New Top Candidates available today`;
+    location.reload();
   } else {
     alert("❌ Invalid credentials\nUse Demo:\nEmail: demo@staffing.com\nPassword: demo123");
   }
 }
 
-function logout(){
-  localStorage.clear();
-  location.reload();
-}
+function logout(){ localStorage.clear(); location.reload(); }
 
 function displayCandidates(list){
   let html = "";
@@ -194,7 +192,7 @@ function displayCandidates(list){
     let isDownloaded = downloadedProfiles.includes(c.id);
     html+=`<div class="candidate-card ${c.isNew?'new':''}">
       ${c.isNew ? '<span class="new-badge">NEW</span>' : ''}
-      <h3>${c.name} <span class="match-score">Match: ${c.match}</span></h3>
+      <h3 style="margin-top:0;">${c.name} <span class="match-score">Match: ${c.match}</span></h3>
       <p><b>${c.designation}</b> | ${c.exp} Years | ${c.location} | Visa: ${c.visa} | Notice: ${c.notice}</p>
       <p>${c.skills.split(',').map(s=>`<span class="tag">${s.trim()}</span>`).join('')}</p>
       <button class="btn download" ${isDownloaded?'disabled':''} onclick="downloadResume('${c.id}', '${c.name}')">
@@ -208,36 +206,22 @@ function displayCandidates(list){
 function searchCandidates(){
   let j=document.getElementById('jobTitle').value.toLowerCase().trim();
   let s=document.getElementById('skills').value.toLowerCase().trim();
-  let n=document.getElementById('notice').value;
-  let l=document.getElementById('location').value;
-  let v=document.getElementById('visa').value;
-  
-  if(j==="" && s==="" && n==="" && l==="" && v===""){
-    alert("⚠️ Please enter at least 1 filter to search");
-    return;
-  }
-  
-  let jKeywords = j.split(' ').filter(w=>w.length>2);
-  let sKeywords = s.split(',').map(x=>x.trim()).filter(x=>x.length>0);
-  
+  let n=document.getElementById('notice').value; let l=document.getElementById('location').value; let v=document.getElementById('visa').value;
+  if(j==="" && s==="" && n==="" && l==="" && v===""){ alert("⚠️ Please enter at least 1 filter to search"); return; }
+  let jKeywords = j.split(' ').filter(w=>w.length>2); let sKeywords = s.split(',').map(x=>x.trim()).filter(x=>x.length>0);
   let filtered=candidates.filter(c=>{
     let jobMatch = jKeywords.length === 0 ? true : jKeywords.some(keyword => c.designation.toLowerCase().includes(keyword));
     let skillMatch = sKeywords.length === 0 ? true : sKeywords.some(keyword => c.skills.toLowerCase().includes(keyword));
-    let noticeMatch = n === "" || c.notice === n;
-    let locationMatch = l === "" || c.location === l;
-    let visaMatch = v === "" || c.visa === v;
-    
+    let noticeMatch = n === "" || c.notice === n; let locationMatch = l === "" || c.location === l; let visaMatch = v === "" || c.visa === v;
     return jobMatch && skillMatch && noticeMatch && locationMatch && visaMatch;
   });
-  
   document.getElementById('bannerText').innerText = `${filtered.length} Candidates found for your search`;
   displayCandidates(filtered);
 }
 
 function downloadResume(id, name){
   if(credits>0){
-    credits--; 
-    document.getElementById('credits').innerText=credits; 
+    credits--; document.getElementById('credits').innerText=credits; 
     downloadedProfiles.push(id);
     localStorage.setItem('downloadedProfiles', JSON.stringify(downloadedProfiles));
     localStorage.setItem('credits', credits);
