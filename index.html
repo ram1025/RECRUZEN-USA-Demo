@@ -1,235 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RECRUZEN-USA - AI Sourcing for US IT</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-* {box-sizing: border-box;}
-body {font-family: 'Inter', Arial; background: #f1f5f9; margin:0;}
+body {font-family: 'Inter', Arial; background:#f8fafc; margin:0;}
+.container {max-width:1200px; margin:0 auto; padding:0 20px;}
 
-/* LOGIN PAGE PREMIUM */
-.login-page {min-height:100vh; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);}
-.login-box {max-width:440px; width:90%; background:white; padding:40px; border-radius:16px; box-shadow:0 20px 50px rgba(0,0,0,0.2); animation: slideUp 0.6s ease;}
-@keyframes slideUp { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
-.login-logo {font-size:28px; font-weight:800; background: linear-gradient(90deg, #2563eb, #F97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
-.login-box h2 {color:#0f172a; margin:5px 0 10px 0;}
-.subtitle {color:#64748b; margin-bottom:25px; font-size:14px;}
-.login-box input {width:100%; padding:14px; margin:10px 0; border:2px solid #e2e8f0; border-radius:8px; font-size:14px; transition:0.3s;}
-.login-box input:focus {border-color:#2563eb; outline:none;}
-.password-wrapper {position:relative;}
-.eye {position:absolute; right:12px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:18px;}
-.btn {background:linear-gradient(90deg, #2563eb, #1d4ed8); color:white; padding:14px; width:100%; border:none; border-radius:8px; font-weight:700; cursor:pointer; font-size:16px; margin-top:10px; transition:0.3s;}
-.btn:hover {transform:translateY(-2px); box-shadow:0 8px 20px rgba(37,99,235,0.3);}
-.btn.download {background:linear-gradient(90deg, #16a34a, #15803d); width:160px; padding:12px;}
-.btn.download:disabled {background:#94a3b8; cursor:not-allowed; transform:none;}
-.btn.logout {background:linear-gradient(90deg, #ef4444, #dc2626); width:auto; padding:10px 20px; font-size:14px;}
-.btn-banner {background:white; color:#2563eb; border:2px solid white; padding:12px 20px; border-radius:8px; font-weight:800; cursor:pointer; white-space:nowrap;}
-.btn-banner:hover {background:rgba(255,255,255,0.2); color:white;}
-.demo-info {background:#eff6ff; border-left:4px solid #2563eb; padding:12px; border-radius:8px; margin-top:15px; font-size:13px;}
+/* TOP HEADER LIKE TECHFETCH */
+.topbar {background:white; border-bottom:1px solid #e2e8f0; padding:10px 0; font-size:13px;}
+.topbar a {margin-right:15px; color:#64748b; text-decoration:none;}
 
-/* DASHBOARD HEADER */
-.header {display:flex; justify-content:space-between; align-items:center; background:white; padding:18px 30px; border-bottom:1px solid #e2e8f0; box-shadow:0 2px 10px rgba(0,0,0,0.05); position:sticky; top:0; z-index:10;}
+/* LOGIN CARD */
+.login-page {min-height:80vh; display:flex; align-items:center; justify-content:center; padding:40px 20px;}
+.login-box {width:420px; background:white; padding:40px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08);}
+.login-box .btn {background:#2563eb; width:100%; padding:14px; border:none; border-radius:6px; color:white; font-weight:700;}
 
-/* PREMIUM GRADIENT BANNER */
-.banner-premium {
-    background: linear-gradient(135deg, #F97316 0%, #2563eb 100%); 
-    color: white; 
-    padding: 30px; 
-    border-radius: 16px; 
-    margin: 20px;
-    display:flex; justify-content:space-between; align-items:center;
-    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
-    flex-wrap: wrap;
-    gap: 15px;
-    animation: fadeIn 0.8s ease;
-}
-@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
-.banner-premium h1 {margin:0; font-size:24px; font-weight:800;}
-.banner-premium p {margin:8px 0 0 0; font-size:15px; opacity:0.95;}
+/* PREMIUM BANNER */
+.banner {background: linear-gradient(90deg, #F97316 0%, #2563eb 100%); color:white; padding:30px; border-radius:12px; margin:20px 0;}
 
-.search-bar {background:white; padding:20px; margin:0 20px 20px 20px; border-radius:12px; border:1px solid #e2e8f0; display:flex; gap:10px; flex-wrap:wrap; box-shadow:0 4px 15px rgba(0,0,0,0.05);}
-.search-bar input,.search-bar select {padding:12px; border:2px solid #e2e8f0; border-radius:8px; flex:1; min-width:150px; font-size:14px;}
-.search-bar input:focus,.search-bar select:focus {border-color:#2563eb; outline:none;}
-
-.candidate-card {background:white; margin:20px; padding:20px; border-radius:12px; border:1px solid #e2e8f0; position:relative; box-shadow:0 4px 15px rgba(0,0,0,0.05); transition:0.3s;}
-.candidate-card:hover {transform:translateY(-3px); box-shadow:0 8px 25px rgba(0,0,0,0.1);}
-.match-score {background:#dcfce7; color:#166534; padding:5px 10px; border-radius:20px; font-size:12px; font-weight:700;}
-.tag {background:#eff6ff; color:#1e40af; padding:5px 10px; border-radius:6px; font-size:12px; margin-right:6px; border:1px solid #bfdbfe; display:inline-block; margin-top:6px;}
-.new {border-left:4px solid #16a34a;}
-.new-badge {position: absolute; top: 15px; right: 15px; background: linear-gradient(90deg, #16a34a, #15803d); color: white; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight:800;}
-.hidden {display:none !important;}
-.empty-state {text-align:center; color:#64748b; padding:80px 20px;}
+/* FOOTER LIKE TECHFETCH */
+footer {background:#1e293b; color:#cbd5e1; padding:40px 0; margin-top:50px;}
+.footer-grid {display:grid; grid-template-columns: repeat(4, 1fr); gap:30px;}
+footer h4 {color:white; margin-bottom:15px;}
+footer a {display:block; color:#94a3b8; text-decoration:none; margin:8px 0; font-size:14px;}
+.copyright {text-align:center; padding:20px 0; border-top:1px solid #334155; margin-top:30px; font-size:13px;}
 </style>
 </head>
 <body>
 
-<div id="loginPage" class="hidden">
-  <div class="login-page">
-    <div class="login-box">
-      <div class="login-logo">RECRUZEN-USA 🇺🇸</div>
-      <h2>Welcome Back</h2>
-      <p class="subtitle">AI Sourcing Platform for US IT Staffing</p>
-      <input type="email" id="email" placeholder="Work Email">
-      <div class="password-wrapper">
-        <input type="password" id="pass" placeholder="Password">
-        <span class="eye" onclick="togglePassword()">👁️</span>
-      </div>
-      <button class="btn" onclick="login()">Login</button>
-      <div class="demo-info">
-        <b>Demo Credentials:</b><br>
-        Email: demo@staffing.com<br>
-        Password: demo123
-      </div>
-    </div>
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="container">
+    <a href="#">Job Channels</a><a href="#">Skill Score</a><a href="#">About Us</a><a href="#">Contact</a>
   </div>
 </div>
 
-<div id="dashboard" class="hidden">
-  <div class="header">
-    <h2 style="margin:0;">RECRUZEN-USA <span style="font-size:14px; color:#64748b;">Dashboard</span></h2>
-    <div>
-      Credits: <b id="credits" style="color:#F97316;">50</b> 
-      <button class="btn logout" onclick="logout()">Logout</button>
-    </div>
-  </div>
-
-  <!-- PREMIUM BANNER -->
-  <div class="banner-premium">
-    <div>
-      <h1>🚀 AI Talent Radar</h1>
-      <p id="bannerText">Finding your next 10x hire in 30 seconds</p>
-    </div>
-    <button class="btn-banner" onclick="alert('Upgrade to Pro Plan for Unlimited Downloads')">Upgrade to Pro</button>
-  </div>
-
-  <div class="search-bar">
-    <input type="text" id="jobTitle" placeholder="Job Title: IT Support">
-    <input type="text" id="skills" placeholder="Skills: Java, ATS">
-    <select id="notice">
-      <option value="">Select Notice Period</option>
-      <option value="Immediate">Immediate</option>
-      <option value="2 Weeks">2 Weeks</option>
-      <option value="30 Days">30 Days</option>
-      <option value="60 Days">60 Days</option>
-    </select>
-    <select id="location">
-      <option value="">Select Location</option>
-      <option value="Remote">Remote</option>
-      <option value="Austin, TX">Austin, TX</option>
-      <option value="New York, NY">New York, NY</option>
-    </select>
-    <select id="visa">
-      <option value="">Select Visa</option>
-      <option value="US Citizen">US Citizen</option>
-      <option value="Green Card">Green Card</option>
-      <option value="H1B">H1B</option>
-      <option value="OPT">OPT/CPT</option>
-    </select>
-    <button class="btn" style="width:auto;" onclick="searchCandidates()">🔍 Search Talent</button>
+<!-- DASHBOARD -->
+<div class="container">
+  <div class="banner">
+    <h1>🚀 AI Talent Radar</h1>
+    <p>Finding your next 10x hire in 30 seconds</p>
   </div>
   
-  <div id="candidateList">
-    <div class="empty-state">
-      <h3>Start Your Search</h3>
-      <p>Enter filters above and click Search to find candidates</p>
-    </div>
-  </div>
+  <!-- YOUR SEARCH BAR AND CANDIDATES HERE -->
 </div>
 
-<script>
-let credits = parseInt(localStorage.getItem('credits')) || 50;
-let downloadedProfiles = JSON.parse(localStorage.getItem('downloadedProfiles')) || [];
+<!-- FOOTER -->
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <h4>For Employers</h4>
+      <a href="#">Post Jobs</a><a href="#">Find Candidates</a><a href="#">AI Sourcing</a><a href="#">Pricing</a>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <a href="#">About Us</a><a href="#">Contact Us</a><a href="#">News</a><a href="#">Careers</a>
+    </div>
+    <div>
+      <h4>Resources</h4>
+      <a href="#">FAQ</a><a href="#">Skill Score</a><a href="#">GDPR</a><a href="#">Privacy Policy</a>
+    </div>
+    <div>
+      <h4>RECRUZEN-USA</h4>
+      <p>AI-Powered IT Staffing Platform for US Companies</p>
+    </div>
+  </div>
+  <div class="copyright">Copyright © 2024 - 2026 recruzen.in All Rights Reserved.</div>
+</footer>
 
-let talentProfile = localStorage.getItem("talentiqProfile");
-let candidates = [
-  {id:"ganesh001", name:"GANESH RAM MAKINA", designation:"IT Support Specialist & Senior Talent Acquisition", match:"99%", visa:"H1B", location:"Austin, TX", notice:"30 Days", skills:"Java, J2EE, Spring Boot, WebSphere, Kibana, Grafana, Recruitment, ATS", exp:9, isNew:true},
-  {id:"p1", name:"Priya Sharma", designation:"Senior Java Developer", match:"96%", visa:"H1B", location:"Remote", notice:"30 Days", skills:"Java, Spring Boot, AWS", exp:5, isNew:false},
-  {id:"p2", name:"Rahul Verma", designation:"Full Stack Engineer", match:"92%", visa:"Green Card", location:"Austin, TX", notice:"Immediate", skills:"React, Node, AWS", exp:4, isNew:false}
-];
-
-if(talentProfile){
-    let data = JSON.parse(talentProfile);
-    let newCandidate = {
-        id:"talent_"+Date.now(), name:data.name, designation:data.designation, match:"98%", 
-        visa:"H1B", location:data.location, notice:data.jobType, skills:data.skills, exp:data.exp, isNew:true
-    };
-    candidates.unshift(newCandidate);
-}
-
-(function init(){
-  let session = localStorage.getItem('recruzenSession');
-  if(session === 'loggedIn'){
-    document.getElementById('dashboard').classList.remove('hidden');
-    document.getElementById('credits').innerText = credits;
-    document.getElementById('bannerText').innerText = `${candidates.filter(c=>c.isNew).length} New Top Candidates available today`;
-  } else {
-    document.getElementById('loginPage').classList.remove('hidden');
-  }
-})();
-
-function togglePassword(){ let pass = document.getElementById('pass'); pass.type = pass.type === 'password' ? 'text' : 'password'; }
-
-function login(){
-  let email = document.getElementById('email').value;
-  let pass = document.getElementById('pass').value;
-  if(email === "demo@staffing.com" && pass === "demo123"){
-    localStorage.setItem('recruzenSession', 'loggedIn');
-    localStorage.setItem('credits', credits);
-    location.reload();
-  } else {
-    alert("❌ Invalid credentials\nUse Demo:\nEmail: demo@staffing.com\nPassword: demo123");
-  }
-}
-
-function logout(){ localStorage.clear(); location.reload(); }
-
-function displayCandidates(list){
-  let html = "";
-  if(list.length==0) html="<div class='empty-state'><h3>No candidates found</h3><p>Try: IT Support, Java, Austin, H1B</p></div>";
-  list.forEach(c=>{
-    let isDownloaded = downloadedProfiles.includes(c.id);
-    html+=`<div class="candidate-card ${c.isNew?'new':''}">
-      ${c.isNew ? '<span class="new-badge">NEW</span>' : ''}
-      <h3 style="margin-top:0;">${c.name} <span class="match-score">Match: ${c.match}</span></h3>
-      <p><b>${c.designation}</b> | ${c.exp} Years | ${c.location} | Visa: ${c.visa} | Notice: ${c.notice}</p>
-      <p>${c.skills.split(',').map(s=>`<span class="tag">${s.trim()}</span>`).join('')}</p>
-      <button class="btn download" ${isDownloaded?'disabled':''} onclick="downloadResume('${c.id}', '${c.name}')">
-        ${isDownloaded ? '✓ Downloaded' : '⬇ Download CV'}
-      </button>
-    </div>`;
-  });
-  document.getElementById('candidateList').innerHTML=html;
-}
-
-function searchCandidates(){
-  let j=document.getElementById('jobTitle').value.toLowerCase().trim();
-  let s=document.getElementById('skills').value.toLowerCase().trim();
-  let n=document.getElementById('notice').value; let l=document.getElementById('location').value; let v=document.getElementById('visa').value;
-  if(j==="" && s==="" && n==="" && l==="" && v===""){ alert("⚠️ Please enter at least 1 filter to search"); return; }
-  let jKeywords = j.split(' ').filter(w=>w.length>2); let sKeywords = s.split(',').map(x=>x.trim()).filter(x=>x.length>0);
-  let filtered=candidates.filter(c=>{
-    let jobMatch = jKeywords.length === 0 ? true : jKeywords.some(keyword => c.designation.toLowerCase().includes(keyword));
-    let skillMatch = sKeywords.length === 0 ? true : sKeywords.some(keyword => c.skills.toLowerCase().includes(keyword));
-    let noticeMatch = n === "" || c.notice === n; let locationMatch = l === "" || c.location === l; let visaMatch = v === "" || c.visa === v;
-    return jobMatch && skillMatch && noticeMatch && locationMatch && visaMatch;
-  });
-  document.getElementById('bannerText').innerText = `${filtered.length} Candidates found for your search`;
-  displayCandidates(filtered);
-}
-
-function downloadResume(id, name){
-  if(credits>0){
-    credits--; document.getElementById('credits').innerText=credits; 
-    downloadedProfiles.push(id);
-    localStorage.setItem('downloadedProfiles', JSON.stringify(downloadedProfiles));
-    localStorage.setItem('credits', credits);
-    alert(`✅ 1 Credit Deducted!\nDownloading ${name}'s Resume`);
-    searchCandidates(); 
-  }
-  else alert("❌ No credits left. Please buy credits");
-}
-</script>
 </body>
 </html>
