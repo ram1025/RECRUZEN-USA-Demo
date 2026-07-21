@@ -17,6 +17,8 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
 .btn.download {background:#16a34a; width:150px; padding:12px;}
 .btn.download:disabled {background:#94a3b8; cursor:not-allowed;}
 .btn.logout {background:#ef4444; width:auto; padding:10px 20px; font-size:14px;}
+.btn-banner {background:#2563eb; color:white; border:none; padding:12px 20px; border-radius:8px; font-weight:700; cursor:pointer; white-space:nowrap;}
+.btn-banner:hover {background:#1d4ed8;}
 .demo-info {background:#eff6ff; border:1px solid #bfdbfe; padding:12px; border-radius:6px; margin-top:15px; font-size:13px;}
 .demo-info b {color:#1e40af;}
 .header {display:flex; justify-content:space-between; align-items:center; background:white; padding:15px 30px; border-bottom:1px solid #e2e8f0;}
@@ -29,6 +31,24 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
 .new-badge {position: absolute; top: 15px; right: 15px; background: #16a34a; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight:700;}
 .hidden {display:none !important;}
 .empty-state {text-align:center; color:#64748b; padding:80px 20px;}
+
+/* GLASSMORPHISM BANNER CSS */
+.banner-glass {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #0f172a;
+    padding: 20px 30px;
+    border-radius: 16px;
+    margin: 20px;
+    display:flex; justify-content:space-between; align-items:center;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.banner-glass h1 {margin:0; font-size:20px; font-weight:800;}
+.banner-glass p {margin:5px 0 0 0; font-size:14px; color:#475569;}
 </style>
 </head>
 <body>
@@ -58,6 +78,15 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
       Credits: <b id="credits">50</b> 
       <button class="btn logout" onclick="logout()">Logout</button>
     </div>
+  </div>
+
+  <!-- GLASS BANNER ADDED HERE -->
+  <div class="banner-glass">
+    <div>
+      <h1>AI Talent Radar 🎯</h1>
+      <p id="bannerText">2 New Top Candidates match your search today</p>
+    </div>
+    <button class="btn-banner" onclick="alert('Upgrade to Pro Plan for Unlimited Downloads')">Upgrade to Pro</button>
   </div>
 
   <div class="search-bar">
@@ -98,17 +127,37 @@ body {font-family: 'Inter', Arial; background: #f8fafc; margin:0;}
 let credits = parseInt(localStorage.getItem('credits')) || 50;
 let downloadedProfiles = JSON.parse(localStorage.getItem('downloadedProfiles')) || [];
 
+// TalentIQ.nundi data teesukovadam
+let talentProfile = localStorage.getItem("talentiqProfile");
 let candidates = [
   {id:"ganesh001", name:"GANESH RAM MAKINA", designation:"IT Support Specialist & Senior Talent Acquisition", match:"99%", visa:"H1B", location:"Austin, TX", notice:"30 Days", skills:"Java, J2EE, Spring Boot, WebSphere, Kibana, Grafana, Recruitment, ATS", exp:9, isNew:true},
   {id:"p1", name:"Priya Sharma", designation:"Senior Java Developer", match:"96%", visa:"H1B", location:"Remote", notice:"30 Days", skills:"Java, Spring Boot, AWS", exp:5, isNew:false},
   {id:"p2", name:"Rahul Verma", designation:"Full Stack Engineer", match:"92%", visa:"Green Card", location:"Austin, TX", notice:"Immediate", skills:"React, Node, AWS", exp:4, isNew:false}
 ];
 
+if(talentProfile){
+    let data = JSON.parse(talentProfile);
+    let newCandidate = {
+        id:"talent_"+Date.now(), 
+        name:data.name, 
+        designation:data.designation, 
+        match:"98%", 
+        visa:"H1B", 
+        location:data.location, 
+        notice:data.jobType, 
+        skills:data.skills, 
+        exp:data.exp, 
+        isNew:true
+    };
+    candidates.unshift(newCandidate);
+}
+
 (function init(){
   let session = localStorage.getItem('recruzenSession');
   if(session === 'loggedIn'){
     document.getElementById('dashboard').classList.remove('hidden');
     document.getElementById('credits').innerText = credits;
+    document.getElementById('bannerText').innerText = `${candidates.filter(c=>c.isNew).length} New Top Candidates available today`;
   } else {
     document.getElementById('loginPage').classList.remove('hidden');
   }
@@ -127,6 +176,7 @@ function login(){
     localStorage.setItem('credits', credits);
     document.getElementById('loginPage').classList.add('hidden');
     document.getElementById('dashboard').classList.remove('hidden');
+    document.getElementById('bannerText').innerText = `${candidates.filter(c=>c.isNew).length} New Top Candidates available today`;
   } else {
     alert("❌ Invalid credentials\nUse Demo:\nEmail: demo@staffing.com\nPassword: demo123");
   }
@@ -155,7 +205,6 @@ function displayCandidates(list){
   document.getElementById('candidateList').innerHTML=html;
 }
 
-// SEARCH LOGIC FIX: KEYWORD BASED OR MATCH
 function searchCandidates(){
   let j=document.getElementById('jobTitle').value.toLowerCase().trim();
   let s=document.getElementById('skills').value.toLowerCase().trim();
@@ -168,7 +217,7 @@ function searchCandidates(){
     return;
   }
   
-  let jKeywords = j.split(' ').filter(w=>w.length>2); // 2 chars kanna peddavi
+  let jKeywords = j.split(' ').filter(w=>w.length>2);
   let sKeywords = s.split(',').map(x=>x.trim()).filter(x=>x.length>0);
   
   let filtered=candidates.filter(c=>{
@@ -181,7 +230,7 @@ function searchCandidates(){
     return jobMatch && skillMatch && noticeMatch && locationMatch && visaMatch;
   });
   
-  console.log("Filtered:", filtered); // Debug kosam
+  document.getElementById('bannerText').innerText = `${filtered.length} Candidates found for your search`;
   displayCandidates(filtered);
 }
 
