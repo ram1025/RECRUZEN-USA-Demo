@@ -12,20 +12,21 @@ body {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helve
 .topbar {background:white; border-bottom:1px solid #e2e8f0; padding:14px 0; font-size:14px; position:sticky; top:0; z-index:20;}
 .topbar.container {display:flex; justify-content:space-between; align-items:center;}
 .topbar-logo {font-size:18px; font-weight:700; background: linear-gradient(90deg, #0B3D91, #F97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
-.login-page {min-height:calc(100vh - 60px); display:flex; align-items:center; justify-content:center; padding:40px 20px; background:white;}
-.login-box {width:400px; background:white; padding:40px; border-radius:8px; border:1px solid #e2e8f0;}
+.login-page {min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px 20px; background:linear-gradient(135deg, #0B3D91 0%, #1d4ed8 100%);}
+.login-box {width:420px; background:white; padding:40px; border-radius:12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);}
+.login-logo {font-size:32px; font-weight:700; background: linear-gradient(90deg, #0B3D91, #F97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom:8px; text-align:center;}
 .btn {background:linear-gradient(90deg, #0B3D91, #1d4ed8); width:100%; padding:12px; border:none; border-radius:6px; color:white; font-weight:600; font-size:15px; cursor:pointer;}
-.header {display:flex; justify-content:space-between; align-items:center; background:white; padding:16px 0; border-bottom:1px solid #e2e8f0; position:sticky; top:59px;}
+.demo-box {background:#eff6ff; border:1px solid #bfdbfe; border-radius:6px; padding:12px; margin-top:20px; font-size:13px;}
+.header {display:flex; justify-content:space-between; align-items:center; background:white; padding:16px 24px; border-bottom:1px solid #e2e8f0; position:sticky; top:59px; z-index:10;}
 .credits-badge {color:#F97316; font-weight:800;}
 .profile-btn {background:#f1f5f9; border:1px solid #e2e8f0; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:600; display:flex; align-items:center; gap:8px;}
-.profile-avatar {width:24px; height:24px; border-radius:50%; background:linear-gradient(90deg, #0B3D91, #F97316); color:white; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;}
-.dropdown {display:none; position:absolute; right:0; top:45px; background:white; min-width:180px; box-shadow:0 8px 24px rgba(0,0,0,0.12); border-radius:8px; z-index:100; border:1px solid #e2e8f0;}
+.profile-avatar {width:28px; height:28px; border-radius:50%; background:linear-gradient(90deg, #0B3D91, #F97316); color:white; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;}
+.dropdown {display:none; position:absolute; right:24px; top:65px; background:white; min-width:180px; box-shadow:0 8px 24px rgba(0,0,0,0.12); border-radius:8px; z-index:100;}
 .dropdown a {color:#334155; padding:12px 16px; text-decoration:none; display:block; font-size:14px;}
 .show {display:block;}
 .banner {background: linear-gradient(90deg, #F97316 0%, #0B3D91 100%); color:white; padding:24px 30px; border-radius:12px; margin:24px 0;}
-.btn-primary {background:white; color:#0B3D91; padding:10px 18px; border:none; border-radius:6px; font-weight:700; cursor:pointer;}
 .search-bar {background:white; padding:20px; border-radius:8px; border:1px solid #e2e8f0; display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-bottom:20px;}
-.search-bar input,.search-bar select {padding:12px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px;}
+.search-bar input,.search-bar select {padding:12px; border:1px solid #cbd5e1; border-radius:6px; width:100%;}
 .search-bar.full-width {grid-column: 1 / -1;}
 .candidate-card {background:white; padding:20px; border-radius:8px; border:1px solid #e2e8f0; margin-bottom:16px;}
 .candidate-card.mine {border:2px solid #F97316; background:#fff7ed;}
@@ -33,14 +34,7 @@ body {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helve
 .match-badge {background:#dcfce7; color:#166534; padding:3px 8px; border-radius:4px; font-size:12px; font-weight:700;}
 .my-badge {background:#F97316; color:white; padding:3px 8px; border-radius:4px; font-size:12px; font-weight:700; margin-left:6px;}
 .empty-state {text-align:center; padding:60px 20px; color:#64748b; background:white; border-radius:8px; border:1px dashed #cbd5e1;}
-/* PDF POPUP */
-.modal {display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6);}
-.modal-content {background:white; margin:3% auto; padding:0; border-radius:8px; width:90%; max-width:900px; height:90%;}
-.modal-header {padding:16px; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;}
-.close {color:#aaa; font-size:28px; font-weight:bold; cursor:pointer;}
-.close:hover {color:black;}
-.modal-body {height:calc(100% - 60px);}
-.modal-body iframe {width:100%; height:100%; border:none;}
+@media(max-width:768px){.search-bar {grid-template-columns: 1fr;}.container {padding:0 16px;}}
 </style>
 </head>
 <body>
@@ -50,12 +44,12 @@ body {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helve
 <div id="loginPage">
   <div class="login-page">
     <div class="login-box">
-      <div style="font-size:28px; font-weight:700; background: linear-gradient(90deg, #0B3D91, #F97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">RECRUZEN-USA</div>
-      <p>Sign in to your employer account</p>
+      <div class="login-logo">RECRUZEN-USA</div>
+      <p style="text-align:center; color:#64748b; margin-bottom:24px;">Sign in to your employer account</p>
       <label>Work Email</label><input type="email" id="email" placeholder="demo@staffing.com">
       <label>Password</label><input type="password" id="pass" placeholder="demo123">
       <button class="btn" onclick="login()">Sign In</button>
-      <p style="background:#eff6ff; padding:12px; margin-top:20px; border-radius:6px;"><b>Demo:</b> demo@staffing.com / demo123</p>
+      <div class="demo-box"><b>Demo Login:</b><br>Email: demo@staffing.com<br>Password: demo123</div>
     </div>
   </div>
 </div>
@@ -68,7 +62,7 @@ body {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helve
         <div>Credits: <span id="credits" class="credits-badge">50</span></div>
         <div style="position:relative;">
           <div class="profile-btn" onclick="toggleProfile()"><div class="profile-avatar">RM</div><span>Ram Makina</span><span>▼</span></div>
-          <div id="profileDropdown" class="dropdown"><a href="#">👤 My Profile</a><a href="#" onclick="logout()">🚪 Log out</a></div>
+          <div id="profileDropdown" class="dropdown"><a href="#" onclick="logout()">🚪 Log out</a></div>
         </div>
       </div>
     </div>
@@ -88,39 +82,32 @@ body {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helve
   </div>
 </div>
 
-<!-- PDF MODAL -->
-<div id="resumeModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header"><h3 id="modalTitle">Resume</h3><span class="close" onclick="closeModal()">&times;</span></div>
-    <div class="modal-body"><iframe id="resumeFrame" src=""></iframe></div>
-  </div>
-</div>
-
 <script>
 let credits = parseInt(localStorage.getItem('recruzenCredits')) || 50;
 let MY_RESUME_ID = "ganesh001";
 
 let allCandidates = [
-  {id:"ganesh001", name:"GANESH RAM MAKINA", role:"IT Support Specialist & Senior Recruiter", exp:9, visa:"H1B", loc:"Austin, TX", skills:["Java","J2EE","Spring Boot","ATS","AI Sourcing","JIRA","Kibana"], match:100, salary:"$95K", availability:"30 Days", resume:"1000388404.pdf"}, // NEE PDF
-  {id:"priya002", name:"PRIYA SHARMA", role:"Senior Java Developer", exp:7, visa:"GC", loc:"Remote", skills:["Java","Microservices","AWS","Docker"], match:97, salary:"$140K", availability:"Immediate", resume:""},
-  {id:"rahul003", name:"RAHUL MEHTA", role:"DevOps Engineer", exp:6, visa:"L2", loc:"Dallas, TX", skills:["Kubernetes","Jenkins","AWS","Terraform"], match:96, salary:"$130K", availability:"15 Days", resume:""}
+  {id:"ganesh001", name:"GANESH RAM MAKINA", email:"ganesh.ram.makina@gmail.com", phone:"+91-9876543210", role:"IT Support Specialist & Senior Recruiter", exp:9, visa:"H1B", loc:"Austin, TX", skills:["Java","J2EE","Spring Boot","ATS","AI Sourcing","JIRA","Kibana","Grafana"], match:100, salary:"$95K", availability:"30 Days"},
+  {id:"priya002", name:"PRIYA SHARMA", email:"priya.s@email.com", phone:"+1-555-0101", role:"Senior Java Developer", exp:7, visa:"GC", loc:"Remote", skills:["Java","Microservices","AWS","Docker"], match:97, salary:"$140K", availability:"Immediate"},
+  {id:"rahul003", name:"RAHUL MEHTA", email:"rahul.m@email.com", phone:"+1-555-0102", role:"DevOps Engineer", exp:6, visa:"L2", loc:"Dallas, TX", skills:["Kubernetes","Jenkins","AWS","Terraform"], match:96, salary:"$130K", availability:"15 Days"}
 ];
 
 (function init(){
-  if(localStorage.getItem('recruzenSession') === 'loggedIn'){
-    document.getElementById('dashboard').classList.remove('hidden');
-    document.getElementById('loginPage').classList.add('hidden');
-    document.getElementById('credits').innerText = credits;
-  }
+  if(localStorage.getItem('recruzenSession') === 'loggedIn'){ showDashboard(); } else { showLogin(); }
 })();
+
+function showLogin(){ document.getElementById('dashboard').classList.add('hidden'); document.getElementById('loginPage').classList.remove('hidden'); }
+function showDashboard(){ document.getElementById('loginPage').classList.add('hidden'); document.getElementById('dashboard').classList.remove('hidden'); document.getElementById('credits').innerText = credits; }
 
 function login(){
   if(document.getElementById('email').value === "demo@staffing.com" && document.getElementById('pass').value === "demo123"){
     localStorage.setItem('recruzenSession', 'loggedIn');
-    location.reload();
+    localStorage.setItem('recruzenCredits', credits);
+    showDashboard();
   } else { alert("Invalid. Use demo login."); }
 }
-function logout(){ localStorage.removeItem('recruzenSession'); location.reload(); }
+
+function logout(){ localStorage.removeItem('recruzenSession'); localStorage.removeItem('recruzenCredits'); credits = 50; showLogin(); }
 function toggleProfile() { document.getElementById("profileDropdown").classList.toggle("show"); }
 
 function searchCandidates(){
@@ -143,7 +130,6 @@ function searchCandidates(){
       let matchNotice = n==="" || c.availability === n;
       return matchJob && matchSkill && matchLoc && matchVisa && matchNotice;
     });
-
     filtered.forEach(c => { if(c.id === MY_RESUME_ID) c.match = 100; });
     filtered.sort((a,b) => b.match - a.match);
     renderCandidates(filtered, `${filtered.length} AI Ranked Candidates`);
@@ -157,32 +143,68 @@ function renderCandidates(list, title){
   list.forEach(c=>{
     let isMe = c.id === MY_RESUME_ID;
     html+=`<div class="candidate-card ${isMe? 'mine' : ''}">
-      <div style="display:flex; justify-content:space-between; flex-wrap:wrap;">
-        <div>
+      <div style="display:flex; justify-content:space-between; align-items:start; flex-wrap:wrap;">
+        <div style="flex:1;">
           <h3>${c.name} <span class="match-badge">${c.match}% Match</span> ${isMe? '<span class="my-badge">YOUR PROFILE</span>' : ''}</h3>
-          <p>${c.role} | ${c.exp} Years | ${c.loc}</p>
+          <p style="color:#475569;">${c.role} | ${c.exp} Years | ${c.loc}</p>
           <div style="margin:8px 0;">${c.skills.map(skill=>`<span class="tag">${skill}</span>`).join('')}</div>
-          <p style="font-size:13px;">Visa: ${c.visa} | Salary: ${c.salary} | Available: ${c.availability}</p>
+          <p style="font-size:13px; color:#64748b;">Visa: ${c.visa} | Salary: ${c.salary} | Available: ${c.availability}</p>
         </div>
-        <button class="btn" style="width:auto; padding:10px 20px;" onclick="viewResume('${c.id}', '${c.name}', '${c.resume}')">View Resume</button>
+        <button class="btn" style="width:auto; padding:10px 20px;" onclick='downloadResume(${JSON.stringify(c)})'>Download Resume</button>
       </div>
     </div>`;
   });
   document.getElementById('candidateList').innerHTML = html;
 }
 
-function viewResume(id, name, resumeFile){
+// FAKE DOWNLOAD FUNCTION - 1 CREDIT DEDUCT
+function downloadResume(candidate){
   if(credits <= 0) { alert("No credits left. Please upgrade."); return; }
   credits--;
   localStorage.setItem('recruzenCredits', credits);
   document.getElementById('credits').innerText = credits;
-  
-  document.getElementById('modalTitle').innerText = name + " - Resume";
-  document.getElementById('resumeFrame').src = resumeFile;
-  document.getElementById('resumeModal').style.display = "block";
+
+  // FAKE RESUME CONTENT GENERATE CHEYYADAM
+  let resumeContent = `
+
+           RESUME
+
+Name: ${candidate.name}
+Email: ${candidate.email}
+Phone: ${candidate.phone}
+Location: ${candidate.loc}
+
+PROFESSIONAL SUMMARY
+${candidate.role} with ${candidate.exp}+ years of experience in IT Support and Talent Acquisition.
+
+SKILLS
+${candidate.skills.join(', ')}
+
+EXPERIENCE
+- ${candidate.role}
+- Visa Status: ${candidate.visa}
+- Availability: ${candidate.availability}
+- Expected Salary: ${candidate.salary}
+
+This is a demo resume generated by RECRUZEN-USA
+
+  `;
+
+  // FILE GA DOWNLOAD CHEYYADAM
+  let blob = new Blob([resumeContent], {type: 'text/plain'});
+  let url = window.URL.createObjectURL(blob);
+  let a = document.createElement('a');
+  a.href = url;
+  a.download = candidate.name + "_Resume.txt";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
+
+  alert(`Downloading resume for ${candidate.name}\nCredits Left: ${credits}`);
 }
-function closeModal(){ document.getElementById('resumeModal').style.display = "none"; }
-window.onclick = function(event) { if (event.target == document.getElementById('resumeModal')) { closeModal(); } }
+
+window.onclick = function(event) { if (!event.target.closest('.profile-btn')) { document.getElementById("profileDropdown").classList.remove("show"); } }
 </script>
 </body>
 </html>
