@@ -1,72 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RECRUZEN-USA - AI Sourcing for US IT</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
+* {box-sizing: border-box;}
 body {font-family: 'Inter', Arial; background:#f8fafc; margin:0;}
 .container {max-width:1200px; margin:0 auto; padding:0 20px;}
-
-/* TOP HEADER LIKE TECHFETCH */
-.topbar {background:white; border-bottom:1px solid #e2e8f0; padding:10px 0; font-size:13px;}
-.topbar a {margin-right:15px; color:#64748b; text-decoration:none;}
-
-/* LOGIN CARD */
-.login-page {min-height:80vh; display:flex; align-items:center; justify-content:center; padding:40px 20px;}
-.login-box {width:420px; background:white; padding:40px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.08);}
-.login-box .btn {background:#2563eb; width:100%; padding:14px; border:none; border-radius:6px; color:white; font-weight:700;}
-
-/* PREMIUM BANNER */
-.banner {background: linear-gradient(90deg, #F97316 0%, #2563eb 100%); color:white; padding:30px; border-radius:12px; margin:20px 0;}
-
-/* FOOTER LIKE TECHFETCH */
-footer {background:#1e293b; color:#cbd5e1; padding:40px 0; margin-top:50px;}
+.hidden {display:none !important;}
+.topbar {background:white; border-bottom:1px solid #e2e8f0; padding:12px 0; font-size:13px;}
+.topbar a {margin-right:18px; color:#64748b; text-decoration:none; font-weight:500;}
+.login-page {min-height:100vh; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%); padding:20px;}
+.login-box {width:440px; background:white; padding:45px; border-radius:16px; box-shadow:0 20px 50px rgba(0,0,0,0.2);}
+.login-logo {font-size:30px; font-weight:800; background: linear-gradient(90deg, #2563eb, #F97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+.login-box input {width:100%; padding:14px; margin:10px 0; border:2px solid #e2e8f0; border-radius:10px;}
+.login-box .btn {background:linear-gradient(90deg, #2563eb, #1d4ed8); width:100%; padding:14px; border:none; border-radius:10px; color:white; font-weight:700; font-size:16px; cursor:pointer;}
+.header {display:flex; justify-content:space-between; align-items:center; background:white; padding:18px 0; border-bottom:1px solid #e2e8f0;}
+.banner {background: linear-gradient(90deg, #F97316 0%, #2563eb 100%); color:white; padding:30px 40px; border-radius:16px; margin:25px 0; display:flex; justify-content:space-between; align-items:center;}
+.banner .btn-banner {background:white; color:#2563eb; padding:12px 20px; border:none; border-radius:8px; font-weight:800; cursor:pointer;}
+footer {background:#1e293b; color:#cbd5e1; padding:50px 0 0 0; margin-top:60px;}
 .footer-grid {display:grid; grid-template-columns: repeat(4, 1fr); gap:30px;}
-footer h4 {color:white; margin-bottom:15px;}
-footer a {display:block; color:#94a3b8; text-decoration:none; margin:8px 0; font-size:14px;}
 .copyright {text-align:center; padding:20px 0; border-top:1px solid #334155; margin-top:30px; font-size:13px;}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
-<div class="topbar">
-  <div class="container">
-    <a href="#">Job Channels</a><a href="#">Skill Score</a><a href="#">About Us</a><a href="#">Contact</a>
+<div class="topbar"><div class="container"><a href="#">Job Channels</a><a href="#">Skill Score</a><a href="#">About Us</a></div></div>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+  <div class="login-page">
+    <div class="login-box">
+      <div class="login-logo">RECRUZEN-USA 🇺🇸</div>
+      <h2>Welcome Back</h2>
+      <input type="email" id="email" placeholder="Work Email">
+      <input type="password" id="pass" placeholder="Password">
+      <button class="btn" onclick="login()">Login</button>
+      <div style="background:#eff6ff; padding:12px; margin-top:15px; font-size:13px;"><b>Demo:</b> demo@staffing.com / demo123</div>
+    </div>
   </div>
 </div>
 
 <!-- DASHBOARD -->
-<div class="container">
-  <div class="banner">
-    <h1>🚀 AI Talent Radar</h1>
-    <p>Finding your next 10x hire in 30 seconds</p>
+<div id="dashboard" class="hidden">
+  <div class="container">
+    <div class="header">
+      <h2 style="margin:0;">Dashboard</h2>
+      <div>Credits: <b id="credits" style="color:#F97316;">50</b> <button class="btn" style="width:auto; padding:10px 20px; background:#ef4444;" onclick="logout()">Logout</button></div>
+    </div>
+    <div class="banner">
+      <div><h1>🚀 AI Talent Radar</h1><p id="bannerText">Finding your next 10x hire</p></div>
+      <button class="btn-banner">Upgrade to Pro</button>
+    </div>
+    <div id="candidateList"><p>Search to see candidates</p></div>
   </div>
-  
-  <!-- YOUR SEARCH BAR AND CANDIDATES HERE -->
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="container footer-grid">
-    <div>
-      <h4>For Employers</h4>
-      <a href="#">Post Jobs</a><a href="#">Find Candidates</a><a href="#">AI Sourcing</a><a href="#">Pricing</a>
-    </div>
-    <div>
-      <h4>Company</h4>
-      <a href="#">About Us</a><a href="#">Contact Us</a><a href="#">News</a><a href="#">Careers</a>
-    </div>
-    <div>
-      <h4>Resources</h4>
-      <a href="#">FAQ</a><a href="#">Skill Score</a><a href="#">GDPR</a><a href="#">Privacy Policy</a>
-    </div>
-    <div>
-      <h4>RECRUZEN-USA</h4>
-      <p>AI-Powered IT Staffing Platform for US Companies</p>
-    </div>
+    <div><h4>For Employers</h4><a href="#">Post Jobs</a></div>
+    <div><h4>Company</h4><a href="#">About Us</a></div>
+    <div><h4>Resources</h4><a href="#">FAQ</a></div>
+    <div><h4>RECRUZEN-USA</h4><p>AI-Powered IT Staffing</p></div>
   </div>
   <div class="copyright">Copyright © 2024 - 2026 recruzen.in All Rights Reserved.</div>
 </footer>
 
+<script>
+// Credits and data should NOT be cleared on logout
+let credits = parseInt(localStorage.getItem('recruzenCredits')) || 50;
+
+(function init(){
+  if(localStorage.getItem('recruzenSession') === 'loggedIn'){
+    document.getElementById('dashboard').classList.remove('hidden');
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('credits').innerText = credits;
+  }
+})();
+
+function login(){
+  let email = document.getElementById('email').value;
+  let pass = document.getElementById('pass').value;
+  if(email === "demo@staffing.com" && pass === "demo123"){
+    localStorage.setItem('recruzenSession', 'loggedIn'); // Only session
+    localStorage.setItem('recruzenCredits', credits); // Save credits separately
+    location.reload();
+  } else {
+    alert("❌ Invalid credentials\nUse: demo@staffing.com / demo123");
+  }
+}
+
+// FIXED LOGOUT - Only removes session, not data
+function logout(){ 
+  localStorage.removeItem('recruzenSession'); // Only session clear
+  location.reload(); 
+}
+
+// Prevent logout on pull to refresh
+window.addEventListener('load', function(){
+  document.getElementById('credits').innerText = credits;
+});
+</script>
 </body>
 </html>
