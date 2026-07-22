@@ -10,19 +10,17 @@ body {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helve
 .container {max-width:1200px; margin:0 auto; padding:0 24px;}
 .hidden {display:none!important;}
 
-/* TOPBAR */
 .topbar {background:white; border-bottom:1px solid #e2e8f0; padding:14px 0; position:sticky; top:0; z-index:20;}
 .topbar-logo {font-size:18px; font-weight:700; background: linear-gradient(90deg, #0B3D91, #F97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
 
-/* LOGIN - FIXED */
 .login-page {min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; background:linear-gradient(135deg, #0B3D91 0%, #1d4ed8 100%);}
 .login-box {width:100%; max-width:420px; background:white; padding:32px; border-radius:12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);}
 .login-logo {font-size:28px; font-weight:700; background: linear-gradient(90deg, #0B3D91, #F97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom:8px; text-align:center;}
 .login-subtitle {font-size:14px; color:#64748b; margin-bottom:24px; text-align:center;}
 
 .form-group {margin-bottom:16px;}
-.form-group label {font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;} /* IDHE FIX */
-.form-group input {width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px;}
+.form-group label {font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;}
+.form-group input {width:100%; padding:12px 40px 12px 12px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px;}
 .form-group input:focus {border-color:#0B3D91; outline:none;}
 
 .input-wrap {position:relative;}
@@ -32,7 +30,6 @@ body {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helve
 .btn:hover {opacity:0.9;}
 .demo-box {background:#eff6ff; border:1px solid #bfdbfe; border-radius:6px; padding:12px; margin-top:20px; font-size:13px;}
 
-/* DASHBOARD */
 .header {display:flex; justify-content:space-between; align-items:center; background:white; padding:16px 24px; border-bottom:1px solid #e2e8f0; position:sticky; top:59px; z-index:10; flex-wrap:wrap; gap:10px;}
 .header h2 {font-size:20px; font-weight:600;}
 .credits-badge {color:#F97316; font-weight:800;}
@@ -46,8 +43,6 @@ body {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helve
 .show {display:block;}
 
 .banner {background: linear-gradient(90deg, #F97316 0%, #0B3D91 100%); color:white; padding:24px 30px; border-radius:12px; margin:24px 0;}
-.banner h1 {margin:0; font-size:22px; font-weight:700;}
-
 .search-bar {background:white; padding:20px; border-radius:8px; border:1px solid #e2e8f0; display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-bottom:20px;}
 .search-bar label {font-size:12px; font-weight:600; color:#475569; display:block; margin-bottom:6px;}
 .search-bar input,.search-bar select {padding:12px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px; width:100%;}
@@ -83,14 +78,14 @@ body {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helve
       
       <div class="form-group">
         <label>Work Email</label>
-        <input type="email" id="email" placeholder="demo@staffing.com">
+        <input type="email" id="email" value="demo@staffing.com">
       </div>
 
       <div class="form-group">
         <label>Password</label>
         <div class="input-wrap">
-          <input type="password" id="pass" placeholder="demo123">
-          <span class="eye-icon" onclick="togglePassword()">👁️</span>
+          <input type="password" id="pass" value="demo123">
+          <span class="eye-icon" onclick="togglePassword(this)">👁️</span>
         </div>
       </div>
 
@@ -146,21 +141,31 @@ function showLogin(){ document.getElementById('dashboard').classList.add('hidden
 function showDashboard(){ document.getElementById('loginPage').classList.add('hidden'); document.getElementById('dashboard').classList.remove('hidden'); document.getElementById('credits').innerText = credits; }
 
 function login(){
-  if(document.getElementById('email').value === "demo@staffing.com" && document.getElementById('pass').value === "demo123"){
+  let email = document.getElementById('email').value;
+  let pass = document.getElementById('pass').value;
+  console.log(email, pass); // DEBUG
+  if(email === "demo@staffing.com" && pass === "demo123"){
     localStorage.setItem('recruzenSession', 'loggedIn');
     localStorage.setItem('recruzenCredits', credits);
     showDashboard();
-  } else { alert("Invalid. Use demo login."); }
+  } else { 
+    alert("Invalid. Use: demo@staffing.com / demo123"); 
+  }
 }
 
-function logout(){ localStorage.removeItem('recruzenSession'); localStorage.removeItem('recruzenCredits'); credits = 50; showLogin(); }
+function logout(){ 
+  localStorage.clear(); // FULL CLEAR
+  credits = 50; 
+  showLogin(); 
+}
+
 function toggleProfile() { document.getElementById("profileDropdown").classList.toggle("show"); }
 
-function togglePassword(){
-  let passField = document.getElementById('pass');
-  let eyeIcon = document.querySelector('.eye-icon');
-  if(passField.type === "password"){ passField.type = "text"; eyeIcon.innerText = "🙈"; } 
-  else { passField.type = "password"; eyeIcon.innerText = "👁️"; }
+// EYE ICON FIX
+function togglePassword(icon){
+  let input = icon.previousElementSibling;
+  if(input.type === "password"){ input.type = "text"; icon.innerText = "🙈"; } 
+  else { input.type = "password"; icon.innerText = "👁️"; }
 }
 
 function searchCandidates(){
