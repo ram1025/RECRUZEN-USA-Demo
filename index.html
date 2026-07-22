@@ -8,8 +8,6 @@
 * {box-sizing: border-box; margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;}
 body {background:#f8fafc;}
 .hidden {display:none!important;}
-
-/* LOGIN */
 .login-page {min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; background:linear-gradient(135deg, #0B3D91 0%, #1d4ed8 100%);}
 .login-box {width:100%; max-width:450px; background:white; padding:40px; border-radius:16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);}
 .login-logo {font-size:28px; font-weight:800; background: linear-gradient(90deg, #0B3D91, #F97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align:center;}
@@ -20,38 +18,29 @@ body {background:#f8fafc;}
 .eye {position:absolute; right:12px; top:38px; cursor:pointer; font-size:18px;}
 .btn-primary {width:100%; padding:12px; background:linear-gradient(90deg, #0B3D91, #1d4ed8); color:white; border:none; border-radius:8px; font-weight:700; font-size:15px; cursor:pointer;}
 .demo-cred {background:#eff6ff; border-left:4px solid #3b82f6; padding:12px; border-radius:6px; margin-top:16px; font-size:13px;}
-
-/* HEADER */
 .topbar {background:white; padding:12px 24px; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;}
 .logo {font-size:18px; font-weight:800; background: linear-gradient(90deg, #0B3D91, #F97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
 .nav a {margin-left:20px; text-decoration:none; color:#475569; font-size:14px; font-weight:500;}
-
-/* DASHBOARD */
 .container {max-width:1100px; margin:0 auto; padding:20px;}
 .dash-header {display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
 .dash-header h2 {font-size:24px;}
 .credits {font-weight:700; color:#F97316;}
-.profile {background:#f1f5f9; padding:8px 12px; border-radius:8px; display:flex; align-items:center; gap:8px; font-weight:600;}
+.profile {background:#f1f5f9; padding:8px 12px; border-radius:8px; display:flex; align-items:center; gap:8px; font-weight:600; cursor:pointer; position:relative;}
 .avatar {width:32px; height:32px; border-radius:50%; background:linear-gradient(90deg, #0B3D91, #F97316); color:white; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;}
-
-/* BANNER */
+.dropdown {position:absolute; top:45px; right:0; background:white; border:1px solid #e2e8f0; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1); width:200px; z-index:10;}
+.dropdown a {display:block; padding:10px 14px; color:#334155; text-decoration:none; font-size:14px;}
+.dropdown a:hover {background:#f1f5f9;}
 .banner {background: linear-gradient(90deg, #F97316 0%, #0B3D91 100%); color:white; padding:20px; border-radius:12px; margin-bottom:20px;}
-.banner p {font-size:15px;}
-
-/* SEARCH FORM */
 .search-box {background:white; padding:24px; border-radius:12px; border:1px solid #e2e8f0; margin-bottom:20px;}
 .search-grid {display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;}
 .search-grid label {font-size:12px; font-weight:600; color:#475569; display:block; margin-bottom:6px;}
 .search-grid input, .search-grid select {width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px;}
 .full {grid-column: 1 / -1;}
-
-/* CANDIDATE CARD */
 .card {background:white; padding:20px; border-radius:12px; border:2px solid #F97316; margin-bottom:16px;}
 .card h3 {font-size:18px; margin-bottom:8px;}
 .match {color:#16a34a; font-weight:700; font-size:14px;}
 .tag {background:#eff6ff; color:#1e40af; padding:4px 8px; border-radius:4px; font-size:12px; margin-right:6px; display:inline-block;}
 .empty {text-align:center; padding:40px; color:#64748b; background:white; border-radius:12px; border:1px dashed #cbd5e1;}
-
 @media(max-width:768px){.search-grid {grid-template-columns: 1fr;} .container{padding:16px;}}
 </style>
 </head>
@@ -93,7 +82,15 @@ body {background:#f8fafc;}
 <h2>Dashboard</h2>
 <div style="display:flex; align-items:center; gap:16px;">
 <div>Credits: <span id="credit" class="credits">50</span></div>
-<div class="profile"><div class="avatar">RM</div> Ram Makina ▼</div>
+<div class="profile" onclick="toggleDropdown()">
+  <div class="avatar">RM</div> Ram Makina ▼
+  <div id="profileMenu" class="dropdown hidden">
+    <a href="#">👤 My Profile</a>
+    <a href="#">⚙️ Settings</a>
+    <a href="#">💳 Billing</a>
+    <a href="#" onclick="logout()">🚪 Logout</a>
+  </div>
+</div>
 </div>
 </div>
 
@@ -103,23 +100,23 @@ body {background:#f8fafc;}
 
 <div class="search-box">
 <div class="search-grid">
-<div><label>Job Title</label><input type="text" id="job" value="IT Support"></div>
-<div><label>Skills</label><input type="text" id="skill" value="Java, ATS"></div>
+<div><label>Job Title</label><input type="text" id="job" placeholder="e.g. IT Support"></div>
+<div><label>Skills</label><input type="text" id="skill" placeholder="e.g. Java, ATS"></div>
 <div><label>Location</label>
-<select id="loc"><option>Austin, TX</option><option>Dallas, TX</option><option>Remote</option></select>
+<select id="loc"><option value="">Any Location</option><option>Austin, TX</option><option>Dallas, TX</option><option>Remote</option></select>
 </div>
 <div><label>Notice Period</label>
-<select id="notice"><option>30 Days</option><option>Immediate</option><option>15 Days</option></select>
+<select id="notice"><option value="">Any</option><option>30 Days</option><option>Immediate</option><option>15 Days</option></select>
 </div>
 <div><label>Visa Status</label>
-<select id="visa"><option>H1B</option><option>GC</option><option>L2</option></select>
+<select id="visa"><option value="">Any</option><option>H1B</option><option>GC</option><option>L2</option></select>
 </div>
 <div class="full"><button class="btn-primary" onclick="search()">🔍 AI Search Candidates</button></div>
 </div>
 </div>
 
 <div id="result">
-<div class="empty"><h3>No candidates found</h3><p>Click "AI Search Candidates" to start</p></div>
+<div class="empty"><h3>No candidates found</h3><p>Enter details and click "AI Search Candidates"</p></div>
 </div>
 
 </div>
@@ -127,12 +124,32 @@ body {background:#f8fafc;}
 
 <script>
 let credits = 50;
-let MY = {id:"ganesh001", name:"GANESH RAM MAKINA", role:"IT Support Specialist", exp:9, loc:"Austin, TX", visa:"H1B", notice:"30 Days", skills:["Java","ATS","AI Sourcing","JIRA"], match:100};
+
+// CANDIDATE DATABASE
+let candidates = [
+  {id:"ganesh001", name:"GANESH RAM MAKINA", role:"IT Support Specialist", exp:9, loc:"Austin, TX", visa:"H1B", notice:"30 Days", skills:["Java","ATS","AI Sourcing","JIRA"]},
+  {id:"c2", name:"PRIYA SHARMA", role:"Java Developer", exp:6, loc:"Dallas, TX", visa:"GC", notice:"Immediate", skills:["Java","Spring","React"]},
+  {id:"c3", name:"ARJUN PATEL", role:"DevOps Engineer", exp:5, loc:"Remote", visa:"L2", notice:"15 Days", skills:["AWS","Docker","Kubernetes"]}
+];
 
 function togglePass(icon){
   let inp = icon.previousElementSibling;
   inp.type = inp.type==="password"?"text":"password";
   icon.innerText = inp.type==="password"?"👁️":"🙈";
+}
+
+function toggleDropdown(){
+  document.getElementById('profileMenu').classList.toggle('hidden');
+}
+window.onclick = function(e){
+  if(!e.target.closest('.profile')){
+    document.getElementById('profileMenu').classList.add('hidden');
+  }
+}
+
+function logout(){
+  document.getElementById('dashboard').classList.add('hidden');
+  document.getElementById('loginPage').classList.remove('hidden');
 }
 
 function login(){
@@ -142,35 +159,63 @@ function login(){
   }else{alert("Wrong credentials")}
 }
 
+function calculateMatch(c, job, skill, loc, notice, visa){
+  let score = 0;
+  if(job && c.role.toLowerCase().includes(job.toLowerCase())) score += 30;
+  if(skill && skill.split(',').some(s => c.skills.join(' ').toLowerCase().includes(s.trim().toLowerCase()))) score += 30;
+  if(loc && c.loc === loc) score += 20;
+  if(notice && c.notice === notice) score += 10;
+  if(visa && c.visa === visa) score += 10;
+  return score;
+}
+
 function search(){
+  let job = document.getElementById('job').value;
+  let skill = document.getElementById('skill').value;
+  let loc = document.getElementById('loc').value;
+  let notice = document.getElementById('notice').value;
+  let visa = document.getElementById('visa').value;
+  
   document.getElementById('bannerText').innerText = "AI scanning 2.4M profiles...";
   document.getElementById('result').innerHTML = "<p style='text-align:center; padding:20px;'>🤖 AI is ranking...</p>";
   
   setTimeout(()=>{
-    document.getElementById('bannerText').innerText = "AI found 1 candidate in 0.8 seconds";
-    document.getElementById('result').innerHTML = `
+    let results = candidates.map(c => {
+      c.match = calculateMatch(c, job, skill, loc, notice, visa);
+      return c;
+    }).filter(c => c.match > 0).sort((a,b) => b.match - a.match);
+    
+    if(results.length === 0){
+      document.getElementById('bannerText').innerText = "AI found 0 candidates";
+      document.getElementById('result').innerHTML = `<div class="empty"><h3>No candidates found</h3><p>Try different keywords</p></div>`;
+      return;
+    }
+    
+    document.getElementById('bannerText').innerText = `AI found ${results.length} candidate${results.length>1?'s':''} in 0.8 seconds`;
+    document.getElementById('result').innerHTML = results.map(c => `
     <div class="card">
-      <h3>${MY.name} <span class="match">${MY.match}% Match</span></h3>
-      <p style="color:#475569; margin-bottom:8px;">${MY.role} | ${MY.exp} Years | ${MY.loc}</p>
-      <div style="margin-bottom:12px;">${MY.skills.map(s=>`<span class="tag">${s}</span>`).join('')}</div>
-      <p style="font-size:13px; color:#64748b; margin-bottom:12px;">Visa: ${MY.visa} | Notice: ${MY.notice}</p>
-      <button class="btn-primary" style="width:auto; padding:10px 24px;" onclick="download()">Download Resume</button>
-    </div>`;
+      <h3>${c.name} <span class="match">${c.match}% Match</span></h3>
+      <p style="color:#475569; margin-bottom:8px;">${c.role} | ${c.exp} Years | ${c.loc}</p>
+      <div style="margin-bottom:12px;">${c.skills.map(s=>`<span class="tag">${s}</span>`).join('')}</div>
+      <p style="font-size:13px; color:#64748b; margin-bottom:12px;">Visa: ${c.visa} | Notice: ${c.notice}</p>
+      <button class="btn-primary" style="width:auto; padding:10px 24px;" onclick="download('${c.id}')">Download Resume</button>
+    </div>`).join('');
   },700);
 }
 
-function download(){
+function download(id){
   if(credits<=0){alert("No credits left"); return;}
   credits--;
   document.getElementById('credit').innerText = credits;
-  let txt = `NAME: ${MY.name}\nROLE: ${MY.role}\nEXP: ${MY.exp} Years\nSKILLS: ${MY.skills.join(', ')}\nEMAIL: ganesh.ram.makina@gmail.com`;
+  let c = candidates.find(x=>x.id===id);
+  let txt = `NAME: ${c.name}\nROLE: ${c.role}\nEXP: ${c.exp} Years\nLOCATION: ${c.loc}\nSKILLS: ${c.skills.join(', ')}\nVISA: ${c.visa}`;
   let a = document.createElement('a');
   a.href = 'data:text/plain,' + encodeURIComponent(txt);
-  a.download = MY.name + '_Resume.txt';
+  a.download = c.name + '_Resume.txt';
   a.click();
   alert(`Downloaded! Credits left: ${credits}`);
 }
 </script>
 
 </body>
-</html>
+  </html>
